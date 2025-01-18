@@ -1,0 +1,43 @@
+flowchart TB
+  subgraph tokens [DesignTokens]
+    colors[Colors]
+    type[Typography]
+    space[Spacing]
+    radius[Rounded]
+  end
+
+  subgraph colors_detail [ColorRoles]
+    bgDeep["bg-deep #0b1d26"]
+    accentGold["accent-gold #fbd784"]
+    textPrimary["text-primary #ffffff"]
+    borderSubtle["border-subtle rgba white 0.2"]
+  end
+
+  subgraph type_detail [TypeRoles]
+    bentham["Bentham display"]
+    robotoLabel["Roboto label uppercase"]
+    robotoBody["Roboto body"]
+  end
+
+  subgraph components [Components]
+    Header
+    HeroSection
+    ContentSections
+    AuthCard
+    FormField
+    SubmitButton
+    AccountLayout
+    ContactForm
+  end
+
+  colors --> colors_detail
+  type --> type_detail
+
+  AuthCard --> bgDeep
+  AuthCard --> borderSubtle
+  FormField --> bgDeep
+  FormField --> accentGold
+  SubmitButton --> accentGold
+  Header --> bgDeep
+  HeroSection --> bentham
+  ContentSections --> accentGold
