@@ -1,0 +1,42 @@
+flowchart TB
+  subgraph public [PublicPages]
+    Home["/ Landing"]
+    Contact["/contact"]
+    Login["/login"]
+    Signup["/signup"]
+  end
+
+  subgraph protected [ProtectedPages]
+    Account["/account Profile"]
+    Favorites["/account/favorites"]
+    Notes["/account/notes"]
+    NoteEdit["/account/notes/id"]
+  end
+
+  Header[Header Nav]
+  Footer[Footer]
+
+  Header --> Home
+  Header --> Contact
+  Header --> Login
+  Header --> Account
+
+  Footer --> Contact
+
+  Login -->|"success"| Account
+  Signup -->|"success"| Account
+  Login <-->|"switch"| Signup
+
+  Account --> Favorites
+  Account --> Notes
+  Notes --> NoteEdit
+
+  Contact -->|"PB then Resend"| ContactBackend[contact_messages]
+
+  subgraph auth_flow [AuthFlow]
+    LoginForm --> PocketBase
+    OAuthButtons --> PocketBase
+    PocketBase --> Cookie[pb_auth cookie]
+    Cookie --> Middleware
+    Middleware --> protected
+  end
