@@ -939,3 +939,16 @@ footer {
     gap: 200px;
   }
 }
+/* Page shells: auth, contact, account */
+
+.page-shell {
+  min-height: 100vh;
+  padding: 120px 0 80px;
+  background-color: var(--color-bg-deep);
+  background-image: linear-gradient(
+    180deg,
+    rgba(11, 29, 38, 0.6) 0%,
+    var(--color-bg-deep) 40%
+  );
+  position: relative;
+}
