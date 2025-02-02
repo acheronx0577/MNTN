@@ -966,3 +966,15 @@ footer {
 }
 
 .page-shell-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.auth-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--space-md);
+  min-height: calc(100vh - 80px);
+}
