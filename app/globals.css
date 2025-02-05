@@ -978,3 +978,18 @@ footer {
   padding: 0 var(--space-md);
   min-height: calc(100vh - 80px);
 }
+
+.auth-layout__logo {
+  margin-bottom: 40px;
+}
+
+.auth-layout__logo svg {
+  max-width: 120px;
+  height: auto;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: var(--auth-card-max);
+  padding: 40px 32px;
+  background: rgba(11, 29, 38, 0.88);
