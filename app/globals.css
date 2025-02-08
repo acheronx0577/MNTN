@@ -993,3 +993,16 @@ footer {
   max-width: var(--auth-card-max);
   padding: 40px 32px;
   background: rgba(11, 29, 38, 0.88);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  border-top: 2px solid var(--color-accent-gold);
+  backdrop-filter: blur(16px);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.auth-card--large {
+  max-width: var(--auth-card-max-lg);
+  padding: 48px 44px 44px;
+}
