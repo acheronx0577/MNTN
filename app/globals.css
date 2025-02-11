@@ -1006,3 +1006,17 @@ footer {
   max-width: var(--auth-card-max-lg);
   padding: 48px 44px 44px;
 }
+
+@media (min-width: 768px) {
+  .auth-card--large {
+    padding: 56px 52px 48px;
+  }
+}
+
+.auth-card__header {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+.auth-card__eyebrow {
+  font-family: var(--font-body);
