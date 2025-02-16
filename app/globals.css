@@ -1033,3 +1033,17 @@ footer {
 }
 
 .auth-card__eyebrow::before,
+.auth-card__eyebrow::after {
+  content: "";
+  height: 2px;
+  width: 32px;
+  background-color: var(--color-accent-gold);
+}
+
+.auth-card__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  color: var(--color-text-primary);
+  margin-bottom: 12px;
+  line-height: 1.1;
+}
