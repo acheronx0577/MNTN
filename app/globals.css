@@ -1047,3 +1047,16 @@ footer {
   margin-bottom: 12px;
   line-height: 1.1;
 }
+
+.auth-card--large .auth-card__title {
+  font-size: clamp(2.25rem, 5vw, 3rem);
+}
+
+.auth-card__subtitle {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.72);
+  max-width: 36ch;
+  margin: 0 auto;
+}
