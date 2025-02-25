@@ -1073,3 +1073,17 @@ footer {
   font-size: 15px;
   color: rgba(255, 255, 255, 0.65);
 }
+
+.auth-card__footer a {
+  color: var(--color-accent-gold);
+  font-weight: 500;
+}
+
+.form-field {
+  margin-bottom: var(--space-md);
+}
+
+.form-field label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 12px;
