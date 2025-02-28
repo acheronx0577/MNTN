@@ -1087,3 +1087,17 @@ footer {
   display: block;
   font-family: var(--font-body);
   font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--color-accent-gold);
+  margin-bottom: 8px;
+}
+
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  padding: 16px 18px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--color-text-primary);
