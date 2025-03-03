@@ -1101,3 +1101,16 @@ footer {
   font-family: var(--font-body);
   font-size: 16px;
   color: var(--color-text-primary);
+  background: rgba(11, 29, 38, 0.6);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-field__input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-field__input-wrap input {
