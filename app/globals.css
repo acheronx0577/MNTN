@@ -1114,3 +1114,17 @@ footer {
 }
 
 .form-field__input-wrap input {
+  padding-left: 48px;
+}
+
+.form-field__input-wrap input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.form-field__icon {
+  position: absolute;
+  left: 16px;
+  font-size: 20px;
+  color: var(--color-accent-gold);
+  pointer-events: none;
+  opacity: 0.85;
