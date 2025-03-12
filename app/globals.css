@@ -1141,3 +1141,16 @@ footer {
   outline-offset: 2px;
   border-color: var(--color-accent-gold);
 }
+
+.form-field__error {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #ff8a8a;
+}
+
+.form-alert {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  margin-bottom: var(--space-md);
+}
