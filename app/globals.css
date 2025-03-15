@@ -1154,3 +1154,17 @@ footer {
   font-size: 14px;
   margin-bottom: var(--space-md);
 }
+
+.form-alert--error {
+  background: rgba(255, 100, 100, 0.15);
+  border: 1px solid rgba(255, 100, 100, 0.4);
+  color: #ffb4b4;
+}
+
+.form-alert--success {
+  background: rgba(251, 215, 132, 0.12);
+  border: 1px solid rgba(251, 215, 132, 0.4);
+  color: var(--color-accent-gold);
+}
+
+.btn-primary {
