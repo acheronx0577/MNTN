@@ -1168,3 +1168,16 @@ footer {
 }
 
 .btn-primary {
+  width: 100%;
+  padding: 16px 28px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--color-bg-deep);
+  background: linear-gradient(180deg, #fcd98a 0%, var(--color-accent-gold) 100%);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s ease, opacity 0.2s ease;
+}
