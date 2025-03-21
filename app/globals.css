@@ -1181,3 +1181,17 @@ footer {
   cursor: pointer;
   transition: transform 0.15s ease, background 0.2s ease, opacity 0.2s ease;
 }
+
+.btn-primary--icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-primary--icon .bx {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.btn-primary:hover:not(:disabled) {
