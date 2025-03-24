@@ -1195,3 +1195,17 @@ footer {
 }
 
 .btn-primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, #ffe099 0%, #e5c56f 100%);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-divider {
