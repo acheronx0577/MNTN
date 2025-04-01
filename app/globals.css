@@ -1236,3 +1236,15 @@ footer {
   background: transparent;
   transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
 }
+
+.login-steps__dot.is-active {
+  border-color: var(--color-accent-gold);
+  background: var(--color-accent-gold);
+  transform: scale(1.15);
+  box-shadow: 0 0 12px rgba(251, 215, 132, 0.45);
+}
+
+.login-steps__dot.is-done {
+  border-color: var(--color-accent-gold);
+  background: rgba(251, 215, 132, 0.35);
+}
