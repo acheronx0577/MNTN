@@ -1248,3 +1248,18 @@ footer {
   border-color: var(--color-accent-gold);
   background: rgba(251, 215, 132, 0.35);
 }
+
+.login-steps__line {
+  width: 48px;
+  height: 2px;
+  background: var(--color-border-subtle);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
