@@ -1263,3 +1263,16 @@ footer {
 
 .auth-divider::before,
 .auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-border-subtle);
+}
+
+.login-email-locked {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: 16px 18px;
+  margin-bottom: var(--space-md);
