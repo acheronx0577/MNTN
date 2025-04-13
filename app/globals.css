@@ -1290,3 +1290,16 @@ footer {
 
 .login-email-locked__label {
   font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--color-accent-gold);
+}
+
+.login-email-locked__value {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
