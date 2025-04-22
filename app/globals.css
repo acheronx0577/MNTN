@@ -1330,3 +1330,17 @@ footer {
 .login-email-locked__edit:focus-visible {
   outline: 2px solid var(--color-accent-gold);
   outline-offset: 2px;
+}
+
+.login-email-locked__edit .bx {
+  font-size: 18px;
+}
+
+.oauth-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.oauth-btn {
+  display: flex;
