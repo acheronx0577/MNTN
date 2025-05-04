@@ -1384,3 +1384,17 @@ footer {
 .oauth-btn:active:not(:disabled) {
   transform: translateY(0);
 }
+
+.oauth-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  overflow: hidden;
+}
