@@ -1411,3 +1411,17 @@ footer {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: var(--space-md);
+}
+
+.contact-page__label::before,
+.contact-page__label::after {
+  content: "";
+  height: 2px;
+  width: 40px;
+  background-color: var(--color-accent-gold);
+}
