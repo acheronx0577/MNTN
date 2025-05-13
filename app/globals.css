@@ -1425,3 +1425,15 @@ footer {
   width: 40px;
   background-color: var(--color-accent-gold);
 }
+
+.contact-page__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.contact-page__copy {
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.7;
+}
