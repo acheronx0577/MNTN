@@ -1452,3 +1452,16 @@ footer {
 @media (min-width: 992px) {
   .account-layout {
     flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.account-nav {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+}
+
+@media (min-width: 992px) {
