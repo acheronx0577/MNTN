@@ -1492,3 +1492,17 @@ footer {
   color: var(--color-accent-gold);
   border-left-color: var(--color-accent-gold);
   background: rgba(251, 215, 132, 0.08);
+}
+
+.account-nav__logout {
+  margin-top: auto;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.account-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.account-welcome {
+  font-family: var(--font-display);
