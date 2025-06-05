@@ -1533,3 +1533,16 @@ footer {
 .favorite-card {
   display: flex;
   gap: var(--space-sm);
+  padding: var(--space-sm);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.favorite-card img {
+  width: 100px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
