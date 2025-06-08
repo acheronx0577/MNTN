@@ -1546,3 +1546,17 @@ footer {
   border-radius: var(--radius-sm);
   flex-shrink: 0;
 }
+
+.favorite-card__title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+}
+
+.favorite-card__subtitle {
+  font-size: 13px;
+  color: var(--color-accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
