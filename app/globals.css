@@ -1573,3 +1573,17 @@ footer {
 }
 
 .btn-ghost-sm:hover {
+  border-color: var(--color-accent-gold);
+}
+
+.favorite-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-accent-gold);
+  background: rgba(251, 215, 132, 0.1);
+  border: 1px solid var(--color-accent-gold);
+  border-radius: var(--radius-sm);
