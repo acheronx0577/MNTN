@@ -1614,3 +1614,16 @@ footer {
   gap: var(--space-sm);
   padding: var(--space-sm);
   border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.note-item a {
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.note-item a:hover {
+  color: var(--color-accent-gold);
+}
+
+.empty-state {
