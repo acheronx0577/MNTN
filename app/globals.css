@@ -1627,3 +1627,17 @@ footer {
 }
 
 .empty-state {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 15px;
+  padding: var(--space-lg) 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-card,
+  .btn-primary,
+  .oauth-btn,
+  .form-field input,
+  .form-field textarea {
+    transition: none;
+  }
+}
