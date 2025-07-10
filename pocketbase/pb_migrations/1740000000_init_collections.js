@@ -64,3 +64,33 @@ migrate(
       deleteRule: '@request.auth.id != "" && user = @request.auth.id',
     });
     app.save(favorites);
+
+    const notes = new Collection({
+      name: "notes",
+      type: "base",
+      fields: [
+        {
+          name: "user",
+          type: "relation",
+          required: true,
+          collectionId: users.id,
+          cascadeDelete: true,
+          maxSelect: 1,
+        },
+        {
+          name: "hike",
+          type: "relation",
+          required: false,
+          collectionId: hikes.id,
+          cascadeDelete: false,
+          maxSelect: 1,
+        },
+        { name: "title", type: "text", required: true, max: 200 },
+        { name: "body", type: "text", required: true, max: 10000 },
+      ],
+      listRule: '@request.auth.id != "" && user = @request.auth.id',
+      viewRule: '@request.auth.id != "" && user = @request.auth.id',
+      createRule: '@request.auth.id != "" && @request.data.user = @request.auth.id',
+      updateRule: '@request.auth.id != "" && user = @request.auth.id',
+      deleteRule: '@request.auth.id != "" && user = @request.auth.id',
+    });
