@@ -94,3 +94,28 @@ migrate(
       updateRule: '@request.auth.id != "" && user = @request.auth.id',
       deleteRule: '@request.auth.id != "" && user = @request.auth.id',
     });
+    app.save(notes);
+
+    const contactMessages = new Collection({
+      name: "contact_messages",
+      type: "base",
+      fields: [
+        { name: "name", type: "text", required: true, max: 100 },
+        { name: "email", type: "email", required: true },
+        { name: "subject", type: "text", required: true, max: 200 },
+        { name: "message", type: "text", required: true, max: 5000 },
+        {
+          name: "user",
+          type: "relation",
+          required: false,
+          collectionId: users.id,
+          cascadeDelete: false,
+          maxSelect: 1,
+        },
+        {
+          name: "status",
+          type: "select",
+          required: true,
+          maxSelect: 1,
+          values: ["new", "read"],
+        },
