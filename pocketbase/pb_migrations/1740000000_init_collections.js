@@ -119,3 +119,28 @@ migrate(
           maxSelect: 1,
           values: ["new", "read"],
         },
+        { name: "email_sent", type: "bool", required: true },
+      ],
+      listRule: null,
+      viewRule: null,
+      createRule: "",
+      updateRule: null,
+      deleteRule: null,
+    });
+    app.save(contactMessages);
+
+    const seedHikes = [
+      {
+        slug: "get-started",
+        title: "Get Started",
+        subtitle: "01 GEt Started",
+        description:
+          "Determining what level of hiker you are can be an important tool when planning future hikes. This hiking level guide will help you plan hikes according to different hike ratings set by various websites like All Trails and Modern Hiker.",
+        image: "/images/step-1.png",
+        order: 1,
+      },
+      {
+        slug: "hiking-essentials",
+        title: "Picking the right Hiking Gear!",
+        subtitle: "02 Hiking Essentials",
+        description:
