@@ -144,3 +144,28 @@ migrate(
         title: "Picking the right Hiking Gear!",
         subtitle: "02 Hiking Essentials",
         description:
+          "Determining what level of hiker you are can be an important tool when planning future hikes. This hiking level guide will help you plan hikes according to different hike ratings set by various websites like All Trails and Modern Hiker.",
+        image: "/images/step-2.png",
+        order: 2,
+      },
+      {
+        slug: "map-timing",
+        title: "Understand Your Map & Timing",
+        subtitle: "03 where you go is the key",
+        description:
+          "Determining what level of hiker you are can be an important tool when planning future hikes. This hiking level guide will help you plan hikes according to different hike ratings set by various websites like All Trails and Modern Hiker.",
+        image: "/images/step-3.png",
+        order: 3,
+      },
+    ];
+
+    const hikesCollection = app.findCollectionByNameOrId("hikes");
+    for (const hike of seedHikes) {
+      const record = new Record(hikesCollection);
+      record.set("slug", hike.slug);
+      record.set("title", hike.title);
+      record.set("subtitle", hike.subtitle);
+      record.set("description", hike.description);
+      record.set("image", hike.image);
+      record.set("order", hike.order);
+      app.save(record);
