@@ -6,15 +6,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dev:pb": "docker compose -f pocketbase/docker-compose.yml up"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
     "gsap": "^3.12.5",
     "lenis": "^1.1.18",
     "next": "^15.3.3",
+    "pocketbase": "^0.26.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "resend": "^4.5.1"
   },
   "devDependencies": {
     "@types/node": "^22.15.21",
