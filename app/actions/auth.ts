@@ -86,3 +86,8 @@ export async function signupAction(
 
   redirect("/account");
 }
+
+export async function logoutAction() {
+  await clearAuthCookieStore();
+  redirect("/");
+}
