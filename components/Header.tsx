@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useRef } from "react";
 import Logo from "./Logo";
 
@@ -7,11 +8,18 @@ const menuLinks = [
   { href: "#", label: "Equipment" },
   { href: "#", label: "About us" },
   { href: "#", label: "Blog" },
+  { href: "/contact", label: "Contact" },
 ];
 
-export default function Header() {
+type HeaderProps = {
+  user?: { name?: string; email?: string } | null;
+};
+
+export default function Header({ user }: HeaderProps) {
   const headerRef = useRef<HTMLElement>(null);
   const burgerRef = useRef<HTMLDivElement>(null);
+  const accountHref = user ? "/account" : "/login";
+  const accountLabel = user?.name ?? "Account";
 
   const closeMenu = useCallback(() => {
     const header = headerRef.current;
@@ -63,11 +71,19 @@ export default function Header() {
     <header className="header" ref={headerRef}>
       <nav className="navbar">
         <div className="header-container">
-          <a href="#" className="brand">
+          <Link href="/" className="brand">
             <Logo clipId="clip0_header_brand" />
-          </a>
+          </Link>
 
-          <div className="burger" ref={burgerRef} onClick={toggleMenu} role="button" tabIndex={0} onKeyDown={(e) => e.key === "Enter" && toggleMenu()} aria-label="Toggle menu">
+          <div
+            className="burger"
+            ref={burgerRef}
+            onClick={toggleMenu}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === "Enter" && toggleMenu()}
+            aria-label="Toggle menu"
+          >
             <div className="burger-line-wrapper">
               <span className="burger-line" />
               <span className="burger-line" />
@@ -77,9 +93,9 @@ export default function Header() {
 
           <div className="menu">
             <div className="menu-header">
-              <a href="#" className="brand">
+              <Link href="/" className="brand" onClick={closeMenu}>
                 <Logo clipId="clip0_menu_brand" />
-              </a>
+              </Link>
               <div
                 className="burger is-active close-menu"
                 onClick={closeMenu}
@@ -99,19 +115,29 @@ export default function Header() {
             <ul className="menu-inner">
               {menuLinks.map((link) => (
                 <li className="menu-itme" key={link.label}>
-                  <a href={link.href} className="menu-link">
-                    {link.label}
-                  </a>
+                  {link.href.startsWith("/") ? (
+                    <Link
+                      href={link.href}
+                      className="menu-link"
+                      onClick={closeMenu}
+                    >
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <a href={link.href} className="menu-link">
+                      {link.label}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
           </div>
 
           <div className="menu-block">
-            <a href="#" className="menu-block-link">
+            <Link href={accountHref} className="menu-block-link">
               <i className="bx bx-user-circle" />
-              Account
-            </a>
+              {accountLabel}
+            </Link>
           </div>
         </div>
       </nav>
