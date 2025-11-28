@@ -1,14 +1,19 @@
+import Link from "next/link";
 import Logo from "./Logo";
 
 const blogLinks = [
-  "About MNTN",
-  "Contributors & Writers",
-  "Write For Us",
-  "Contact Us",
-  "Privacy Policy",
+  { label: "About MNTN", href: "#" },
+  { label: "Contributors & Writers", href: "#" },
+  { label: "Write For Us", href: "#" },
+  { label: "Contact Us", href: "/contact" },
+  { label: "Privacy Policy", href: "#" },
 ];
 
-const mntnLinks = ["The Team", "Jobs", "Press"];
+const mntnLinks = [
+  { label: "The Team", href: "#" },
+  { label: "Jobs", href: "#" },
+  { label: "Press", href: "#" },
+];
 
 export default function Footer() {
   return (
@@ -17,9 +22,9 @@ export default function Footer() {
         <div className="footer-row">
           <div className="footer-column footer-column-logo">
             <div className="footer-logo">
-              <a href="#">
+              <Link href="/">
                 <Logo clipId="clip0_footer_logo" />
-              </a>
+              </Link>
             </div>
             <div className="footer-copy">
               Get out there & discover your next <br />
@@ -33,8 +38,12 @@ export default function Footer() {
             <h4 className="footer-heading">More on The Blog</h4>
             <ul className="footer-links-list">
               {blogLinks.map((link) => (
-                <li className="footer-links-item" key={link}>
-                  <a href="#">{link}</a>
+                <li className="footer-links-item" key={link.label}>
+                  {link.href.startsWith("/") ? (
+                    <Link href={link.href}>{link.label}</Link>
+                  ) : (
+                    <a href={link.href}>{link.label}</a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -43,8 +52,8 @@ export default function Footer() {
             <h4 className="footer-heading">More on MNTN</h4>
             <ul className="footer-links-list">
               {mntnLinks.map((link) => (
-                <li className="footer-links-item" key={link}>
-                  <a href="#">{link}</a>
+                <li className="footer-links-item" key={link.label}>
+                  <a href={link.href}>{link.label}</a>
                 </li>
               ))}
             </ul>
