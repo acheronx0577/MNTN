@@ -4,32 +4,62 @@
 
 ## Preview
 
-Here's a preview of the **MNTN - Landing Page**:
-
 ![MNTN - Landing Page](./public/images/MNTN.png)
 
-## Figma
+## Stack
 
-A modern travel website UI built with Next.js, React, and GSAP, inspired by the
-
-[MNTN - Landing Page Figma Design](https://www.figma.com/community/file/788675347108478517).
+- **Next.js 15** (App Router)
+- **PocketBase** — auth, hikes, favorites, notes, contact messages
+- **Resend** — contact form email notifications (after PocketBase save)
+- **GSAP + Lenis** — landing page animations
 
 ## Features
 
-- Fully responsive and modern UI.
-- Smooth scroll animations with Lenis and GSAP ScrollTrigger.
-- Next.js App Router project structure.
+- Landing page with scroll animations
+- User auth (email/password + Google/GitHub OAuth)
+- Profile, favorites, and trail notes
+- Contact form (PocketBase first, then Resend)
+- Design system documented in [DESIGN.md](./DESIGN.md)
 
 ## Getting Started
 
-Install dependencies and run the development server:
+### 1. Install dependencies
 
 ```bash
 npm install
+```
+
+### 2. Environment
+
+```bash
+cp .env.local.example .env.local
+```
+
+Edit `.env.local` with your PocketBase URL and Resend keys.
+
+### 3. Start PocketBase
+
+```bash
+npm run dev:pb
+```
+
+On first run, create a superuser:
+
+```bash
+docker exec -it <container> /usr/local/bin/pocketbase superuser upsert you@example.com yourpassword
+```
+
+Admin UI: [http://127.0.0.1:8090/_/](http://127.0.0.1:8090/_/)
+
+Configure OAuth providers in **Settings → Auth providers** (Google, GitHub).
+
+### 4. Start Next.js
+
+```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000).
 
 ### Production build
 
@@ -38,22 +68,18 @@ npm run build
 npm start
 ```
 
-## Design Reference
+## Design
 
-This project is based on the Figma design available here:
-[MNTN - Landing Page Figma File](https://www.figma.com/community/file/788675347108478517)
+- [DESIGN.md](./DESIGN.md) — visual tokens and component rules
+- [docs/design-system.mmd](./docs/design-system.mmd) — token/component diagram
+- [docs/design-pages.mmd](./docs/design-pages.mmd) — page map and flows
+
+## Contact form pipeline
+
+1. Validate + save to PocketBase `contact_messages`
+2. Send notification via Resend (only if step 1 succeeds)
+3. Mark `email_sent: true` on success
 
 ## Tutorial
 
-Watch the step-by-step implementation of this project on my YouTube channel:
-[https://www.youtube.com/@PixelPerfectLabs](https://www.youtube.com/@PixelPerfectLabs).
-
-## Support My Work
-
-If you like this project and want to support my work, consider buying me a coffee!
-
-<a href="https://www.buymeacoffee.com/pixelperfectlabs">
-  <img src="https://i.ibb.co/8sYMgd1/bmc-qr.png" alt="Buy Me a Coffee" height="200" width="200" />
-</a>
-
-> Your support helps me create more amazing UI/UX projects and tutorials. Thank you! 😊
+[Pixel Perfect Labs on YouTube](https://www.youtube.com/@PixelPerfectLabs)
