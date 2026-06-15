@@ -1,9 +1,20 @@
+function normalizePocketBaseUrl(raw: string) {
+  let url = raw.trim().replace(/\/+$/, "");
+  if (url.endsWith("/api")) {
+    url = url.slice(0, -4);
+  }
+  return url;
+}
+
 export function getPocketBaseUrl() {
-  return process.env.NEXT_PUBLIC_POCKETBASE_URL ?? "http://127.0.0.1:8090";
+  const raw = process.env.NEXT_PUBLIC_POCKETBASE_URL ?? "http://127.0.0.1:8090";
+  return normalizePocketBaseUrl(raw);
 }
 
 export function getPocketBaseReachabilityError() {
   const url = getPocketBaseUrl();
+  const raw = (process.env.NEXT_PUBLIC_POCKETBASE_URL ?? "").trim();
+  const hadApiSuffix = /\/api\/?$/i.test(raw);
   const isBrowser = typeof window !== "undefined";
   const onLocalApp =
     isBrowser &&
@@ -16,7 +27,14 @@ export function getPocketBaseReachabilityError() {
     return (
       "PocketBase URL is still set to localhost. In Vercel → Settings → " +
       "Environment Variables, set NEXT_PUBLIC_POCKETBASE_URL to your " +
-      "PocketBase Cloud Admin api url (HTTPS), then redeploy."
+      "PocketBase Cloud host (HTTPS, no /api suffix), then redeploy."
+    );
+  }
+
+  if (hadApiSuffix) {
+    return (
+      "NEXT_PUBLIC_POCKETBASE_URL must be the PocketBase host only, without " +
+      `/api (use ${url}, not ${raw}). Update Vercel and redeploy.`
     );
   }
 
@@ -29,7 +47,7 @@ export function getPocketBaseReachabilityError() {
 
   return (
     `Cannot reach PocketBase at ${url}. Confirm your PocketBase Cloud ` +
-    "instance is running, the Admin api url is correct in Vercel, and " +
-    "you redeployed after changing env vars."
+    "instance is running, the URL is correct in Vercel (no /api suffix), " +
+    "and you redeployed after changing env vars."
   );
 }

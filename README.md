@@ -116,7 +116,7 @@ In **Vercel → Project → Settings → Environment Variables**, add:
 
 | Variable | Example | Notes |
 |----------|---------|--------|
-| `NEXT_PUBLIC_POCKETBASE_URL` | `https://pb.yourdomain.com` | Public HTTPS PocketBase URL |
+| `NEXT_PUBLIC_POCKETBASE_URL` | `https://k1y1g4i89co8bd1.ba7w.pocketbasecloud.com` | PocketBase **host only** (HTTPS, no `/api` suffix) |
 | `RESEND_API_KEY` | `re_...` | Server-only |
 | `RESEND_FROM_EMAIL` | `MNTN <hello@yourdomain.com>` | Verified sender in Resend |
 | `CONTACT_TO_EMAIL` | `you@example.com` | Inbox for contact form |
