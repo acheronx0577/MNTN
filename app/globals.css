@@ -126,8 +126,35 @@ h6 {
   justify-content: flex-start;
 }
 
+.brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 10px 8px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  border-radius: 6px;
+  flex-shrink: 0;
+  transition: opacity 0.15s ease, transform 0.12s ease;
+}
+
+.brand:hover,
+.brand:focus-visible {
+  opacity: 0.82;
+}
+
+.brand:active {
+  opacity: 1;
+  transform: scale(0.97);
+}
+
 .brand svg {
   max-width: 65px;
+  display: block;
+  pointer-events: none;
 }
 
 .menu {

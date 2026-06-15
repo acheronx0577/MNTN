@@ -97,11 +97,30 @@ export default function Header({ user }: HeaderProps) {
     [closeMenu, pathname]
   );
 
+  const handleLogoClick = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>) => {
+      closeMenu();
+
+      if (pathname !== "/") return;
+
+      event.preventDefault();
+      window.history.pushState(null, "", "/");
+      document.getElementById("section-00")?.scrollIntoView({ behavior: "smooth" });
+    },
+    [closeMenu, pathname]
+  );
+
   return (
     <header className="header" ref={headerRef}>
       <nav className="navbar">
         <div className="header-container">
-          <Link href="/" className="brand">
+          <Link
+            href="/"
+            className="brand"
+            aria-label="MNTN home"
+            prefetch
+            onClick={handleLogoClick}
+          >
             <Logo clipId="clip0_header_brand" />
           </Link>
 
@@ -123,7 +142,13 @@ export default function Header({ user }: HeaderProps) {
 
           <div className="menu">
             <div className="menu-header">
-              <Link href="/" className="brand" onClick={closeMenu}>
+              <Link
+                href="/"
+                className="brand"
+                aria-label="MNTN home"
+                prefetch
+                onClick={handleLogoClick}
+              >
                 <Logo clipId="clip0_menu_brand" />
               </Link>
               <div
