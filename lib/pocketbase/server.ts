@@ -1,12 +1,11 @@
 import PocketBase, { type AuthRecord } from "pocketbase";
 import { cookies } from "next/headers";
+import { getPocketBaseUrl } from "./url";
 
 export const PB_COOKIE = "pb_auth";
 
 export function createServerPB() {
-  return new PocketBase(
-    process.env.NEXT_PUBLIC_POCKETBASE_URL ?? "http://127.0.0.1:8090"
-  );
+  return new PocketBase(getPocketBaseUrl());
 }
 
 export async function getServerPB() {

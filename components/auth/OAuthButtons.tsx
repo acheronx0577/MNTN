@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getClientPB } from "@/lib/pocketbase/client";
+import { getPocketBaseReachabilityError } from "@/lib/pocketbase/url";
 import { finalizeOAuth } from "@/app/actions/auth";
 import { GitHubIcon, GoogleIcon } from "./AuthIcons";
 
@@ -17,7 +18,7 @@ function formatOAuthError(err: unknown): string {
   }
 
   if (msg.includes("failed to fetch") || msg.includes("networkerror")) {
-    return "Cannot reach PocketBase. Run npm run dev:all and check NEXT_PUBLIC_POCKETBASE_URL in .env.local.";
+    return getPocketBaseReachabilityError();
   }
 
   if (msg.includes("provider is not enabled") || msg.includes("no such provider")) {
@@ -65,9 +66,7 @@ export default function OAuthButtons() {
       })
       .catch(() => {
         setEnabledProviders([]);
-        setError(
-          "Cannot reach PocketBase. Run npm run dev:all and confirm http://127.0.0.1:8090/api/health works."
-        );
+        setError(getPocketBaseReachabilityError());
       });
   }, []);
 
