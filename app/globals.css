@@ -1179,6 +1179,10 @@ body:has(.auth-layout--split) .page-shell.auth-layout--split::before {
 }
 
 .auth-layout--split .oauth-buttons {
+  gap: clamp(10px, 2vw, 14px);
+}
+
+.auth-layout--split .oauth-buttons__row {
   gap: clamp(8px, 1.5vw, 12px);
 }
 
@@ -1274,7 +1278,7 @@ body:has(.auth-layout--split) .page-shell.auth-layout--split::before {
 }
 
 @media (max-width: 480px) {
-  .auth-layout--split .oauth-buttons {
+  .auth-layout--split .oauth-buttons__row {
     flex-direction: column;
   }
 
@@ -1644,8 +1648,19 @@ body:has(.auth-layout--split) .page-shell.auth-layout--split::before {
 
 .oauth-buttons {
   display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.oauth-buttons__row {
+  display: flex;
   flex-direction: row;
   gap: 12px;
+}
+
+.oauth-buttons__error {
+  margin: 0;
+  width: 100%;
 }
 
 .oauth-btn {

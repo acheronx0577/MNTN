@@ -68,6 +68,40 @@ npm run build
 npm start
 ```
 
+## Deploy to Vercel
+
+The **Next.js app** deploys to Vercel. **PocketBase does not** — host it separately ([PocketBase Cloud](https://pocketbase.io/docs/going-to-production/), Fly.io, VPS, etc.) and point the frontend at it.
+
+### 1. Import repo
+
+1. Go to [vercel.com/new](https://vercel.com/new)
+2. Import `MNTN-Landing-Page-UI-main` from GitHub
+3. Framework preset: **Next.js** (auto-detected)
+4. Deploy (build command: `npm run build`, output: default)
+
+### 2. Environment variables
+
+In **Vercel → Project → Settings → Environment Variables**, add:
+
+| Variable | Example | Notes |
+|----------|---------|--------|
+| `NEXT_PUBLIC_POCKETBASE_URL` | `https://pb.yourdomain.com` | Public HTTPS PocketBase URL |
+| `RESEND_API_KEY` | `re_...` | Server-only |
+| `RESEND_FROM_EMAIL` | `MNTN <hello@yourdomain.com>` | Verified sender in Resend |
+| `CONTACT_TO_EMAIL` | `you@example.com` | Inbox for contact form |
+
+Redeploy after adding variables.
+
+### 3. PocketBase (production)
+
+- Run migrations from `pocketbase/pb_migrations/`
+- **Settings → Auth providers**: enable Google/GitHub; set OAuth redirect to your PocketBase URL, e.g. `https://pb.yourdomain.com/api/oauth2-redirect`
+- Allow your Vercel site origin if needed for browser OAuth (PocketBase CORS / trusted origins)
+
+### 4. Custom domain (optional)
+
+Vercel → **Domains** → add `yourdomain.com`. Update OAuth redirect URLs in Google/GitHub and PocketBase to match production URLs.
+
 ## Design
 
 - [DESIGN.md](./DESIGN.md) — visual tokens and component rules
