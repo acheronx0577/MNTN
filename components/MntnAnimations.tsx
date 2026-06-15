@@ -1,15 +1,25 @@
 "use client";
 
+import "lenis/dist/lenis.css";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
+
 gsap.registerPlugin(ScrollTrigger);
 
 export default function MntnAnimations() {
   useGSAP(
     () => {
-      const lenis = new Lenis();
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return;
+      }
+
+      const lenis = new Lenis({
+        lerp: 0.12,
+        smoothWheel: true,
+        wheelMultiplier: 0.85,
+      });
 
       lenis.on("scroll", ScrollTrigger.update);
 

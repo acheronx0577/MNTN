@@ -1,12 +1,16 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useActionState, useState } from "react";
 import AuthLayout from "./AuthLayout";
 import FormField from "./FormField";
 import SubmitButton from "./SubmitButton";
-import OAuthButtons from "./OAuthButtons";
 import { loginAction, type AuthState } from "@/app/actions/auth";
+
+const OAuthButtons = dynamic(() => import("./OAuthButtons"), {
+  loading: () => <div className="oauth-buttons oauth-buttons--loading" aria-hidden="true" />,
+});
 
 const initialState: AuthState = { ok: false };
 

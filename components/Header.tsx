@@ -18,7 +18,6 @@ type HeaderProps = {
 
 export default function Header({ user }: HeaderProps) {
   const pathname = usePathname();
-  const isAuthRoute = pathname === "/login" || pathname === "/signup";
   const headerRef = useRef<HTMLElement>(null);
   const burgerRef = useRef<HTMLDivElement>(null);
   const accountHref = user ? "/account" : "/login";
@@ -52,29 +51,34 @@ export default function Header({ user }: HeaderProps) {
   }, []);
 
   useEffect(() => {
-    if (isAuthRoute) return;
+    closeMenu();
+  }, [pathname, closeMenu]);
 
+  useEffect(() => {
     const header = headerRef.current;
     const heroSection = document.querySelector(".hero-section");
     if (!header || !heroSection) return;
 
+    let ticking = false;
+
     const onScroll = () => {
-      if (window.scrollY >= (heroSection as HTMLElement).offsetHeight / 2) {
-        header.classList.add("on-scroll");
-      } else {
-        header.classList.remove("on-scroll");
-      }
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        if (window.scrollY >= (heroSection as HTMLElement).offsetHeight / 2) {
+          header.classList.add("on-scroll");
+        } else {
+          header.classList.remove("on-scroll");
+        }
+        ticking = false;
+      });
     };
 
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
 
     return () => window.removeEventListener("scroll", onScroll);
-  }, [isAuthRoute]);
-
-  if (isAuthRoute) {
-    return null;
-  }
+  }, [pathname]);
 
   return (
     <header className="header" ref={headerRef}>
@@ -129,6 +133,7 @@ export default function Header({ user }: HeaderProps) {
                       href={link.href}
                       className="menu-link"
                       onClick={closeMenu}
+                      prefetch
                     >
                       {link.label}
                     </Link>
@@ -143,7 +148,7 @@ export default function Header({ user }: HeaderProps) {
           </div>
 
           <div className="menu-block">
-            <Link href={accountHref} className="menu-block-link">
+            <Link href={accountHref} className="menu-block-link" prefetch>
               <i className="bx bx-user-circle" />
               {accountLabel}
             </Link>

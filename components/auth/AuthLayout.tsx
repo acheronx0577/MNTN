@@ -34,7 +34,7 @@ export default function AuthLayout({
               src={imageSrc}
               alt={imageAlt}
               fill
-              priority
+              loading="eager"
               sizes="(max-width: 900px) 100vw, 50vw"
               className="auth-split__visual-img"
             />

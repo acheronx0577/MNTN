@@ -1,7 +1,8 @@
+import { cache } from "react";
 import { redirect } from "next/navigation";
 import { getServerPB, type UserRecord } from "@/lib/pocketbase/server";
 
-export async function getCurrentUser(): Promise<UserRecord | null> {
+export const getCurrentUser = cache(async (): Promise<UserRecord | null> => {
   try {
     const pb = await getServerPB();
     if (!pb.authStore.isValid) return null;
@@ -9,7 +10,7 @@ export async function getCurrentUser(): Promise<UserRecord | null> {
   } catch {
     return null;
   }
-}
+});
 
 export async function requireAuth(): Promise<UserRecord> {
   const user = await getCurrentUser();

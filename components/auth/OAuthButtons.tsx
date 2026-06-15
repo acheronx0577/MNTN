@@ -5,6 +5,21 @@ import { getClientPB } from "@/lib/pocketbase/client";
 import { finalizeOAuth } from "@/app/actions/auth";
 import { GitHubIcon, GoogleIcon } from "./AuthIcons";
 
+function scheduleIdle(task: () => void): number {
+  if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+    return window.requestIdleCallback(task, { timeout: 1200 });
+  }
+  return globalThis.setTimeout(task, 0) as unknown as number;
+}
+
+function cancelIdle(id: number) {
+  if (typeof window !== "undefined" && "cancelIdleCallback" in window) {
+    window.cancelIdleCallback(id);
+    return;
+  }
+  globalThis.clearTimeout(id as unknown as ReturnType<typeof setTimeout>);
+}
+
 function isPbAbort(err: unknown): boolean {
   return (
     typeof err === "object" &&
@@ -69,27 +84,33 @@ export default function OAuthButtons() {
   useEffect(() => {
     let active = true;
     const pb = getClientPB();
+    pb.autoCancellation(false);
 
-    pb.collection("users")
-      .listAuthMethods()
-      .then((methods) => {
-        if (!active) return;
-        const providers =
-          methods.oauth2?.providers?.map((p) => p.name) ?? [];
-        setEnabledProviders(providers);
-        if (!methods.oauth2?.enabled || providers.length === 0) {
-          setError(
-            "OAuth is not enabled in PocketBase. Enable Google/GitHub under Collections → users → Options → OAuth2."
-          );
-        }
-      })
-      .catch((err) => {
-        if (!active || isPbAbort(err)) return;
-        setEnabledProviders([]);
-      });
+    const idleId = scheduleIdle(() => {
+      if (!active) return;
+
+      pb.collection("users")
+        .listAuthMethods({ requestKey: "oauth-providers" })
+        .then((methods) => {
+          if (!active) return;
+          const providers =
+            methods.oauth2?.providers?.map((p) => p.name) ?? [];
+          setEnabledProviders(providers);
+          if (!methods.oauth2?.enabled || providers.length === 0) {
+            setError(
+              "OAuth is not enabled in PocketBase. Enable Google/GitHub under Collections → users → Options → OAuth2."
+            );
+          }
+        })
+        .catch((err) => {
+          if (!active || isPbAbort(err)) return;
+          setEnabledProviders([]);
+        });
+    });
 
     return () => {
       active = false;
+      cancelIdle(idleId);
     };
   }, []);
 

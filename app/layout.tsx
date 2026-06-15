@@ -1,27 +1,25 @@
 import type { Metadata } from "next";
-import "lenis/dist/lenis.css";
+import { Suspense } from "react";
 import "./globals.css";
 import Header from "@/components/Header";
-import { getCurrentUser } from "@/lib/auth";
+import HeaderUser from "@/components/HeaderUser";
 
 export const metadata: Metadata = {
   title: "MNTN | Landing Page",
   description: "A hiking guide — be prepared for the mountains and beyond.",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await getCurrentUser();
-
   return (
     <html lang="en">
       <body>
-        <Header
-          user={user ? { name: user.name, email: user.email } : null}
-        />
+        <Suspense fallback={<Header />}>
+          <HeaderUser />
+        </Suspense>
         {children}
       </body>
     </html>

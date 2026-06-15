@@ -1663,6 +1663,10 @@ body:has(.auth-layout--split) .page-shell.auth-layout--split::before {
   width: 100%;
 }
 
+.oauth-buttons--loading {
+  min-height: 52px;
+}
+
 .oauth-btn {
   display: flex;
   align-items: center;
