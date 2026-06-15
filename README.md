@@ -8,10 +8,24 @@
 
 ## Stack
 
+### Frontend
 - **Next.js 15** (App Router)
+- **React 19** + **TypeScript**
+- **CSS** — custom tokens and components ([DESIGN.md](./DESIGN.md))
+- **GSAP** + **Lenis** — landing page scroll animations
+- **Boxicons** — icons
+
+### Backend & data
 - **PocketBase** — auth, hikes, favorites, notes, contact messages
+- **Docker** — local PocketBase (`npm run dev:pb`)
+- **PocketBase Cloud** — production backend option
+
+### Auth & email
+- **PocketBase Auth** — email/password + **Google** / **GitHub** OAuth2
 - **Resend** — contact form email notifications (after PocketBase save)
-- **GSAP + Lenis** — landing page animations
+
+### Deploy
+- **Vercel** — Next.js frontend ([demo](https://mntn-lemon.vercel.app/))
 
 ## Features
 
@@ -57,7 +71,7 @@ docker compose -f pocketbase/docker-compose.yml exec pocketbase /usr/local/bin/p
 
 Admin UI: [http://127.0.0.1:8090/_/](http://127.0.0.1:8090/_/)
 
-Configure OAuth providers in **Settings → Auth providers** (Google, GitHub).
+Configure OAuth in **Collections → users → Options → OAuth2** (Google, GitHub).
 
 ### 4. Start everything (one command)
 
@@ -112,7 +126,7 @@ Redeploy after adding variables.
 ### 3. PocketBase (production)
 
 - Run migrations from `pocketbase/pb_migrations/`
-- **Settings → Auth providers**: enable Google/GitHub; set OAuth redirect to your PocketBase URL, e.g. `https://pb.yourdomain.com/api/oauth2-redirect`
+- **Collections → users → Options → OAuth2**: enable Google/GitHub; set OAuth redirect to your PocketBase URL, e.g. `https://pb.yourdomain.com/api/oauth2-redirect`
 - Allow your Vercel site origin if needed for browser OAuth (PocketBase CORS / trusted origins)
 
 ### 4. Custom domain (optional)

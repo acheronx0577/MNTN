@@ -1744,7 +1744,7 @@ body:has(.auth-layout--split) .page-shell.auth-layout--split::before {
 
 .contact-page__header {
   text-align: center;
-  max-width: 640px;
+  max-width: 100%;
   margin: 0 auto var(--space-lg);
 }
 
@@ -1779,6 +1779,13 @@ body:has(.auth-layout--split) .page-shell.auth-layout--split::before {
 .contact-page__copy {
   color: rgba(255, 255, 255, 0.75);
   line-height: 1.7;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .contact-page__copy {
+    white-space: normal;
+  }
 }
 
 .contact-form-wrap {
