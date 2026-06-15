@@ -4,6 +4,7 @@ import { getServerPB } from "@/lib/pocketbase/server";
 import { getCurrentUser } from "@/lib/auth";
 import { getResend } from "@/lib/resend";
 import { escapeHtml, escapeHtmlWithBreaks } from "@/lib/security/escape-html";
+import { checkRateLimit, rateLimitMessage } from "@/lib/security/rate-limit";
 import type { ContactResult } from "@/lib/types";
 
 function validateEmail(email: string) {
@@ -14,6 +15,11 @@ export async function submitContactAction(
   _prev: ContactResult,
   formData: FormData
 ): Promise<ContactResult> {
+  const limit = await checkRateLimit("contact", 5, 60 * 60 * 1000);
+  if (!limit.allowed) {
+    return { ok: false, error: rateLimitMessage(limit.retryAfterSec) };
+  }
+
   const honeypot = String(formData.get("website") ?? "").trim();
   if (honeypot) {
     return { ok: false, error: "Submission rejected." };

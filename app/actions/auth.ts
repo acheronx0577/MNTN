@@ -7,6 +7,7 @@ import {
   setAuthCookie,
   clearAuthCookieStore,
 } from "@/lib/pocketbase/server";
+import { checkRateLimit, rateLimitMessage } from "@/lib/security/rate-limit";
 
 export type AuthState = {
   ok: boolean;
@@ -22,6 +23,11 @@ export async function loginAction(
   _prev: AuthState,
   formData: FormData
 ): Promise<AuthState> {
+  const limit = await checkRateLimit("login", 10, 15 * 60 * 1000);
+  if (!limit.allowed) {
+    return { ok: false, error: rateLimitMessage(limit.retryAfterSec) };
+  }
+
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
 
@@ -50,6 +56,11 @@ export async function signupAction(
   _prev: AuthState,
   formData: FormData
 ): Promise<AuthState> {
+  const limit = await checkRateLimit("signup", 5, 60 * 60 * 1000);
+  if (!limit.allowed) {
+    return { ok: false, error: rateLimitMessage(limit.retryAfterSec) };
+  }
+
   const name = String(formData.get("name") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
@@ -79,9 +90,8 @@ export async function signupAction(
     await pb.collection("users").authWithPassword(email, password);
     await setAuthCookie(pb);
   } catch (err) {
-    const message =
-      err instanceof Error ? err.message : "Could not create account.";
-    return { ok: false, error: message };
+    console.error("Signup failed:", err);
+    return { ok: false, error: "Could not create account. Try a different email." };
   }
 
   redirect("/account");
