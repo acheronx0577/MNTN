@@ -59,7 +59,7 @@ migrate(
       ],
       listRule: '@request.auth.id != "" && user = @request.auth.id',
       viewRule: '@request.auth.id != "" && user = @request.auth.id',
-      createRule: '@request.auth.id != "" && @request.data.user = @request.auth.id',
+      createRule: '@request.auth.id != "" && @request.body.user = @request.auth.id',
       updateRule: '@request.auth.id != "" && user = @request.auth.id',
       deleteRule: '@request.auth.id != "" && user = @request.auth.id',
     });
@@ -90,7 +90,7 @@ migrate(
       ],
       listRule: '@request.auth.id != "" && user = @request.auth.id',
       viewRule: '@request.auth.id != "" && user = @request.auth.id',
-      createRule: '@request.auth.id != "" && @request.data.user = @request.auth.id',
+      createRule: '@request.auth.id != "" && @request.body.user = @request.auth.id',
       updateRule: '@request.auth.id != "" && user = @request.auth.id',
       deleteRule: '@request.auth.id != "" && user = @request.auth.id',
     });
@@ -170,8 +170,6 @@ migrate(
       record.set("order", hike.order);
       app.save(record);
     }
-
-    return true;
   },
   (app) => {
     for (const name of [
@@ -194,7 +192,5 @@ migrate(
       users.fields.removeById(bio.id);
       app.save(users);
     }
-
-    return true;
   }
 );

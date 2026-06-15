@@ -93,19 +93,22 @@ export async function logoutAction() {
 }
 
 export async function finalizeOAuth(
-  token: string,
-  record: unknown
+  authCookie: string
 ): Promise<{ ok: true } | { ok: false; error: string }> {
-  if (!token || !record) {
+  if (!authCookie) {
     return { ok: false, error: "OAuth session invalid." };
   }
 
   try {
     const pb = createServerPB();
-    pb.authStore.save(token, record as Parameters<typeof pb.authStore.save>[1]);
+    pb.authStore.loadFromCookie(authCookie);
+    if (!pb.authStore.isValid) {
+      return { ok: false, error: "OAuth session invalid." };
+    }
     await setAuthCookie(pb);
-    redirect("/account");
   } catch {
     return { ok: false, error: "Could not complete OAuth sign-in." };
   }
+
+  redirect("/account");
 }

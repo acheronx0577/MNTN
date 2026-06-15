@@ -4,10 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:all": "docker compose -f pocketbase/docker-compose.yml up -d && next dev",
+    "dev:pb": "docker compose -f pocketbase/docker-compose.yml up",
+    "dev:pb:stop": "docker compose -f pocketbase/docker-compose.yml down",
+    "pb:superuser": "docker compose -f pocketbase/docker-compose.yml exec pocketbase /usr/local/bin/pocketbase --dir=/pb_data superuser upsert",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "dev:pb": "docker compose -f pocketbase/docker-compose.yml up"
+    "lint": "next lint"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

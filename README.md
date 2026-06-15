@@ -43,23 +43,40 @@ Edit `.env.local` with your PocketBase URL and Resend keys.
 npm run dev:pb
 ```
 
-On first run, create a superuser:
+On first run, create a superuser (must use `--dir=/pb_data` in Docker):
 
 ```bash
-docker exec -it <container> /usr/local/bin/pocketbase superuser upsert you@example.com yourpassword
+npm run pb:superuser -- you@example.com yourpassword
+```
+
+Or directly:
+
+```bash
+docker compose -f pocketbase/docker-compose.yml exec pocketbase /usr/local/bin/pocketbase --dir=/pb_data superuser upsert you@example.com yourpassword
 ```
 
 Admin UI: [http://127.0.0.1:8090/_/](http://127.0.0.1:8090/_/)
 
 Configure OAuth providers in **Settings → Auth providers** (Google, GitHub).
 
-### 4. Start Next.js
+### 4. Start everything (one command)
+
+Make sure **Docker Desktop** is running, then:
 
 ```bash
-npm run dev
+npm run dev:all
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Starts PocketBase in the background and Next.js at [http://localhost:3000](http://localhost:3000).
+
+Stop PocketBase when done: `npm run dev:pb:stop`
+
+### Or start separately
+
+```bash
+npm run dev:pb    # PocketBase only (foreground logs)
+npm run dev       # Next.js only
+```
 
 ### Production build
 
