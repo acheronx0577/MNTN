@@ -2,6 +2,7 @@
 
 import { getServerPB } from "@/lib/pocketbase/server";
 import { requireAuth } from "@/lib/auth";
+import { isSafeRecordId } from "@/lib/security/pocketbase-id";
 import type { ActionResult } from "@/lib/types";
 import { revalidatePath } from "next/cache";
 
@@ -9,6 +10,11 @@ export async function toggleFavoriteAction(
   hikeId: string
 ): Promise<ActionResult & { saved?: boolean }> {
   const user = await requireAuth();
+
+  if (!isSafeRecordId(hikeId)) {
+    return { ok: false, error: "Invalid hike." };
+  }
+
   const pb = await getServerPB();
 
   try {
@@ -37,6 +43,9 @@ export async function toggleFavoriteAction(
 
 export async function removeFavoriteAction(favoriteId: string): Promise<void> {
   const user = await requireAuth();
+
+  if (!isSafeRecordId(favoriteId)) return;
+
   const pb = await getServerPB();
 
   try {
