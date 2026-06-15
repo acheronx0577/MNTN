@@ -29,10 +29,11 @@ function formatOAuthError(err: unknown): string {
     return "Could not reach PocketBase. Try again.";
   }
 
-  if (msg.includes("redirect_uri")) {
+  if (msg.includes("redirect_uri") || msg.includes("invalid request")) {
     return (
-      "OAuth redirect URI mismatch. Add your PocketBase callback URL " +
-      "(/api/oauth2-redirect) in Google/GitHub OAuth app settings."
+      "Google OAuth misconfigured. In Google Cloud Console → Credentials → your OAuth client, add redirect URI: " +
+      "https://k1y1g4i89co8bd1.ba7w.pocketbasecloud.com/api/oauth2-redirect " +
+      "(not your Vercel URL). Also set PocketBase Application URL to https://mntn-lemon.vercel.app."
     );
   }
 
