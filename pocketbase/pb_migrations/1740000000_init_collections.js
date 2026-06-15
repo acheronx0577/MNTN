@@ -119,7 +119,7 @@ migrate(
           maxSelect: 1,
           values: ["new", "read"],
         },
-        { name: "email_sent", type: "bool", required: true },
+        { name: "email_sent", type: "bool", required: false },
       ],
       listRule: null,
       viewRule: null,

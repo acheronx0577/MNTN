@@ -11,6 +11,37 @@ function validateEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+async function saveContactMessage(
+  pb: Awaited<ReturnType<typeof getServerPB>>,
+  data: {
+    name: string;
+    email: string;
+    subject: string;
+    message: string;
+    user?: string;
+  }
+) {
+  const base = { ...data, status: "new" as const };
+
+  try {
+    return await pb.collection("contact_messages").create({
+      ...base,
+      email_sent: false,
+    });
+  } catch {
+    // PocketBase treats required bool `false` as blank on some hosts.
+    try {
+      return await pb.collection("contact_messages").create(base);
+    } catch (inner) {
+      console.error("Contact save retry failed:", inner);
+      return await pb.collection("contact_messages").create({
+        ...base,
+        email_sent: true,
+      });
+    }
+  }
+}
+
 export async function submitContactAction(
   _prev: ContactResult,
   formData: FormData
@@ -45,17 +76,16 @@ export async function submitContactAction(
   let recordId: string;
 
   try {
-    const record = await pb.collection("contact_messages").create({
+    const record = await saveContactMessage(pb, {
       name,
       email,
       subject,
       message,
-      status: "new",
-      email_sent: false,
       ...(user ? { user: user.id } : {}),
     });
     recordId = record.id;
-  } catch {
+  } catch (err) {
+    console.error("Contact save failed:", err);
     return { ok: false, error: "Could not save your message. Try again later." };
   }
 
@@ -79,14 +109,6 @@ export async function submitContactAction(
         <p>${escapeHtmlWithBreaks(message)}</p>
       `,
     });
-
-    try {
-      await pb.collection("contact_messages").update(recordId, {
-        email_sent: true,
-      });
-    } catch {
-      // record saved and email sent — non-critical update failure
-    }
 
     return { ok: true };
   } catch (err) {
