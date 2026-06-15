@@ -5,9 +5,9 @@ import { useCallback, useEffect, useRef } from "react";
 import Logo from "./Logo";
 
 const menuLinks = [
-  { href: "#", label: "Equipment" },
-  { href: "#", label: "About us" },
-  { href: "#", label: "Blog" },
+  { href: "#section-01", label: "Equipment" },
+  { href: "#section-01", label: "About us" },
+  { href: "#section-02", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -124,7 +124,7 @@ export default function Header({ user }: HeaderProps) {
                       {link.label}
                     </Link>
                   ) : (
-                    <a href={link.href} className="menu-link">
+                    <a href={link.href} className="menu-link" onClick={closeMenu}>
                       {link.label}
                     </a>
                   )}

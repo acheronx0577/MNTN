@@ -38,6 +38,9 @@ export async function getHikes(): Promise<Hike[]> {
   try {
     const pb = createServerPB();
     const records = await pb.collection("hikes").getFullList({ sort: "order" });
+    if (records.length === 0) {
+      return FALLBACK_HIKES;
+    }
     return records.map((r) => ({
       id: r.id,
       slug: r.slug as string,
