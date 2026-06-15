@@ -7,7 +7,7 @@ import {
   setAuthCookie,
   clearAuthCookieStore,
 } from "@/lib/pocketbase/server";
-import { checkRateLimit, rateLimitMessage } from "@/lib/security/rate-limit";
+import { checkRateLimit, rateLimitMessage, RATE_LIMIT_MAX, RATE_LIMIT_WINDOW_MS } from "@/lib/security/rate-limit";
 
 export type AuthState = {
   ok: boolean;
@@ -23,7 +23,7 @@ export async function loginAction(
   _prev: AuthState,
   formData: FormData
 ): Promise<AuthState> {
-  const limit = await checkRateLimit("login", 10, 15 * 60 * 1000);
+  const limit = await checkRateLimit("login", RATE_LIMIT_MAX, RATE_LIMIT_WINDOW_MS);
   if (!limit.allowed) {
     return { ok: false, error: rateLimitMessage(limit.retryAfterSec) };
   }
@@ -56,7 +56,7 @@ export async function signupAction(
   _prev: AuthState,
   formData: FormData
 ): Promise<AuthState> {
-  const limit = await checkRateLimit("signup", 5, 60 * 60 * 1000);
+  const limit = await checkRateLimit("signup", RATE_LIMIT_MAX, RATE_LIMIT_WINDOW_MS);
   if (!limit.allowed) {
     return { ok: false, error: rateLimitMessage(limit.retryAfterSec) };
   }

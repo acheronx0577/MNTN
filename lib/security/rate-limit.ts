@@ -7,6 +7,9 @@ type Bucket = {
 
 const buckets = new Map<string, Bucket>();
 
+export const RATE_LIMIT_MAX = 3;
+export const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+
 async function getClientIp() {
   const headerStore = await headers();
   const forwarded = headerStore.get("x-forwarded-for");
