@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef } from "react";
 import Logo from "./Logo";
 
@@ -16,6 +17,8 @@ type HeaderProps = {
 };
 
 export default function Header({ user }: HeaderProps) {
+  const pathname = usePathname();
+  const isAuthRoute = pathname === "/login" || pathname === "/signup";
   const headerRef = useRef<HTMLElement>(null);
   const burgerRef = useRef<HTMLDivElement>(null);
   const accountHref = user ? "/account" : "/login";
@@ -49,6 +52,8 @@ export default function Header({ user }: HeaderProps) {
   }, []);
 
   useEffect(() => {
+    if (isAuthRoute) return;
+
     const header = headerRef.current;
     const heroSection = document.querySelector(".hero-section");
     if (!header || !heroSection) return;
@@ -65,7 +70,11 @@ export default function Header({ user }: HeaderProps) {
     onScroll();
 
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [isAuthRoute]);
+
+  if (isAuthRoute) {
+    return null;
+  }
 
   return (
     <header className="header" ref={headerRef}>
