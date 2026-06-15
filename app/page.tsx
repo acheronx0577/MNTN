@@ -1,6 +1,7 @@
 import ContentSections from "@/components/ContentSections";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
+import HashScroll from "@/components/HashScroll";
 import MntnAnimations from "@/components/MntnAnimations";
 import SideSlider from "@/components/SideSlider";
 import { getCurrentUser } from "@/lib/auth";
@@ -26,6 +27,7 @@ export default async function Home() {
 
   return (
     <>
+      <HashScroll />
       <MntnAnimations />
       <main>
         <HeroSection />

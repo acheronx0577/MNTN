@@ -6,9 +6,9 @@ import { useCallback, useEffect, useRef } from "react";
 import Logo from "./Logo";
 
 const menuLinks = [
-  { href: "#section-01", label: "Equipment" },
-  { href: "#section-01", label: "About us" },
-  { href: "#section-02", label: "Blog" },
+  { href: "/#section-01", label: "Equipment" },
+  { href: "/#section-01", label: "About us" },
+  { href: "/#section-02", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -80,6 +80,23 @@ export default function Header({ user }: HeaderProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, [pathname]);
 
+  const handleNavClick = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      closeMenu();
+
+      const hashIndex = href.indexOf("#");
+      if (hashIndex === -1) return;
+
+      const id = href.slice(hashIndex + 1);
+      if (pathname !== "/" || !id) return;
+
+      event.preventDefault();
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+      window.history.pushState(null, "", `/#${id}`);
+    },
+    [closeMenu, pathname]
+  );
+
   return (
     <header className="header" ref={headerRef}>
       <nav className="navbar">
@@ -126,29 +143,33 @@ export default function Header({ user }: HeaderProps) {
             </div>
 
             <ul className="menu-inner">
-              {menuLinks.map((link) => (
-                <li className="menu-itme" key={link.label}>
-                  {link.href.startsWith("/") ? (
+              {menuLinks.map((link) => {
+                const isActive =
+                  link.href === "/contact" && pathname === "/contact";
+
+                return (
+                  <li className="menu-itme" key={link.label}>
                     <Link
                       href={link.href}
-                      className="menu-link"
-                      onClick={closeMenu}
+                      className={`menu-link${isActive ? " is-active" : ""}`}
+                      onClick={(event) => handleNavClick(event, link.href)}
                       prefetch
                     >
                       {link.label}
                     </Link>
-                  ) : (
-                    <a href={link.href} className="menu-link" onClick={closeMenu}>
-                      {link.label}
-                    </a>
-                  )}
-                </li>
-              ))}
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
           <div className="menu-block">
-            <Link href={accountHref} className="menu-block-link" prefetch>
+            <Link
+              href={accountHref}
+              className={`menu-block-link${pathname === accountHref ? " is-active" : ""}`}
+              prefetch
+              onClick={closeMenu}
+            >
               <i className="bx bx-user-circle" />
               {accountLabel}
             </Link>
