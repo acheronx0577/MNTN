@@ -104,10 +104,22 @@ export default function OAuthButtons() {
     setError(null);
 
     const pb = getClientPB();
+    const requestKey = `oauth-${provider}`;
+    let popupWatcher: number | null = null;
+    let oauthSettled = false;
+
+    const stopPopupWatcher = () => {
+      oauthSettled = true;
+      if (popupWatcher !== null) {
+        window.clearInterval(popupWatcher);
+        popupWatcher = null;
+      }
+    };
 
     pb.collection("users")
       .authWithOAuth2({
         provider,
+        requestKey,
         urlCallback: (url) => {
           const popup = window.open(
             url,
@@ -119,12 +131,23 @@ export default function OAuthButtons() {
               "Popup blocked. Allow popups for this site and try again."
             );
           }
+
+          popupWatcher = window.setInterval(() => {
+            if (oauthSettled) {
+              stopPopupWatcher();
+              return;
+            }
+            if (popup.closed) {
+              pb.cancelRequest(requestKey);
+            }
+          }, 300);
         },
       })
       .then(() => {
+        stopPopupWatcher();
         const cookie = pb.authStore.exportToCookie({
           httpOnly: true,
-          secure: false,
+          secure: window.location.protocol === "https:",
           sameSite: "lax",
           path: "/",
         });
@@ -133,11 +156,16 @@ export default function OAuthButtons() {
       .then((result) => {
         if (!result.ok) {
           setError(result.error ?? "Could not complete OAuth sign-in.");
-          setLoading(null);
         }
+        setLoading(null);
       })
       .catch((err) => {
+        stopPopupWatcher();
         if (isNextRedirect(err)) return;
+        if (isPbAbort(err)) {
+          setLoading(null);
+          return;
+        }
         setError(formatOAuthError(err));
         setLoading(null);
       });
