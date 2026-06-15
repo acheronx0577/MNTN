@@ -2,9 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { getClientPB } from "@/lib/pocketbase/client";
-import { getPocketBaseReachabilityError } from "@/lib/pocketbase/url";
 import { finalizeOAuth } from "@/app/actions/auth";
 import { GitHubIcon, GoogleIcon } from "./AuthIcons";
+
+function isPbAbort(err: unknown): boolean {
+  return (
+    typeof err === "object" &&
+    err !== null &&
+    "isAbort" in err &&
+    (err as { isAbort?: boolean }).isAbort === true
+  );
+}
 
 function formatOAuthError(err: unknown): string {
   if (!(err instanceof Error)) {
@@ -18,11 +26,18 @@ function formatOAuthError(err: unknown): string {
   }
 
   if (msg.includes("failed to fetch") || msg.includes("networkerror")) {
-    return getPocketBaseReachabilityError();
+    return "Could not reach PocketBase. Try again.";
+  }
+
+  if (msg.includes("redirect_uri")) {
+    return (
+      "OAuth redirect URI mismatch. Add your PocketBase callback URL " +
+      "(/api/oauth2-redirect) in Google/GitHub OAuth app settings."
+    );
   }
 
   if (msg.includes("provider is not enabled") || msg.includes("no such provider")) {
-    return "This provider is not enabled in PocketBase. Open http://127.0.0.1:8090/_/ → Settings → Auth providers → enable Google/GitHub and save Client ID + secret.";
+    return "This provider is not enabled in PocketBase. Enable it under Collections → users → Options → OAuth2.";
   }
 
   if (
@@ -30,7 +45,7 @@ function formatOAuthError(err: unknown): string {
     msg.includes("auth failed") ||
     msg.includes("oauth2")
   ) {
-    return "OAuth handshake failed. In PocketBase admin: Settings → Application → set Application URL to http://localhost:3000, then Settings → Auth providers → enable Google with your Client ID and secret.";
+    return "OAuth handshake failed. Check PocketBase Application URL and OAuth2 provider settings.";
   }
 
   return err.message;
@@ -51,23 +66,30 @@ export default function OAuthButtons() {
   const [enabledProviders, setEnabledProviders] = useState<string[] | null>(null);
 
   useEffect(() => {
+    let active = true;
     const pb = getClientPB();
+
     pb.collection("users")
       .listAuthMethods()
       .then((methods) => {
+        if (!active) return;
         const providers =
           methods.oauth2?.providers?.map((p) => p.name) ?? [];
         setEnabledProviders(providers);
         if (!methods.oauth2?.enabled || providers.length === 0) {
           setError(
-            "OAuth is not enabled in PocketBase yet. Open http://127.0.0.1:8090/_/ → Collections → users → Options → OAuth2 → enable Google/GitHub."
+            "OAuth is not enabled in PocketBase. Enable Google/GitHub under Collections → users → Options → OAuth2."
           );
         }
       })
-      .catch(() => {
+      .catch((err) => {
+        if (!active || isPbAbort(err)) return;
         setEnabledProviders([]);
-        setError(getPocketBaseReachabilityError());
       });
+
+    return () => {
+      active = false;
+    };
   }, []);
 
   const handleOAuth = (provider: "google" | "github") => {
