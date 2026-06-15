@@ -44,6 +44,7 @@ export default function LoginForm() {
 
   return (
     <AuthLayout
+      variant="split"
       size="large"
       title="Welcome back"
       subtitle={subtitle}

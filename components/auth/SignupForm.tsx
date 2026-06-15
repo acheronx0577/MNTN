@@ -18,8 +18,11 @@ export default function SignupForm() {
 
   return (
     <AuthLayout
+      variant="split"
+      size="large"
       title="Join MNTN"
       subtitle="Create an account to track favorites and trail notes"
+      imageTagline="Start your next adventure on the trail."
       footer={
         <>
           Already have an account? <Link href="/login">Sign in</Link>

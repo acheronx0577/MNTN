@@ -44,7 +44,7 @@ export default function OAuthButtons() {
           <GoogleIcon />
         </span>
         <span className="oauth-btn__label">
-          {loading === "google" ? "Connecting…" : "Continue with Google"}
+          {loading === "google" ? "Connecting…" : "Google"}
         </span>
       </button>
       <button
@@ -57,7 +57,7 @@ export default function OAuthButtons() {
           <GitHubIcon />
         </span>
         <span className="oauth-btn__label">
-          {loading === "github" ? "Connecting…" : "Continue with GitHub"}
+          {loading === "github" ? "Connecting…" : "GitHub"}
         </span>
       </button>
     </div>
