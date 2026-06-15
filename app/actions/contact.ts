@@ -3,6 +3,7 @@
 import { getServerPB } from "@/lib/pocketbase/server";
 import { getCurrentUser } from "@/lib/auth";
 import { getResend } from "@/lib/resend";
+import { escapeHtml, escapeHtmlWithBreaks } from "@/lib/security/escape-html";
 import type { ContactResult } from "@/lib/types";
 
 function validateEmail(email: string) {
@@ -66,10 +67,10 @@ export async function submitContactAction(
       subject: `[MNTN Contact] ${subject}`,
       html: `
         <h2>New contact message</h2>
-        <p><strong>From:</strong> ${name} (${email})</p>
-        <p><strong>Subject:</strong> ${subject}</p>
+        <p><strong>From:</strong> ${escapeHtml(name)} (${escapeHtml(email)})</p>
+        <p><strong>Subject:</strong> ${escapeHtml(subject)}</p>
         <hr />
-        <p>${message.replace(/\n/g, "<br />")}</p>
+        <p>${escapeHtmlWithBreaks(message)}</p>
       `,
     });
 
