@@ -104,9 +104,22 @@ export default function OAuthButtons() {
     setLoading(provider);
     setError(null);
 
+    // Open popup synchronously on click — avoids blockers and flaky first attempts.
+    const popup = window.open(
+      "about:blank",
+      "pocketbase-oauth",
+      "width=520,height=720,scrollbars=yes,resizable=yes"
+    );
+    if (!popup) {
+      setError("Popup blocked. Allow popups for this site and try again.");
+      setLoading(null);
+      return;
+    }
+
     const pb = getClientPB();
-    const requestKey = `oauth-${provider}`;
+    const requestKey = `oauth-${provider}-${Date.now()}`;
     let popupWatcher: number | null = null;
+    let closeCancelTimer: number | null = null;
     let oauthSettled = false;
 
     const stopPopupWatcher = () => {
@@ -115,6 +128,10 @@ export default function OAuthButtons() {
         window.clearInterval(popupWatcher);
         popupWatcher = null;
       }
+      if (closeCancelTimer !== null) {
+        window.clearTimeout(closeCancelTimer);
+        closeCancelTimer = null;
+      }
     };
 
     pb.collection("users")
@@ -122,24 +139,20 @@ export default function OAuthButtons() {
         provider,
         requestKey,
         urlCallback: (url) => {
-          const popup = window.open(
-            url,
-            "pocketbase-oauth",
-            "width=520,height=720,scrollbars=yes,resizable=yes"
-          );
-          if (!popup) {
-            throw new Error(
-              "Popup blocked. Allow popups for this site and try again."
-            );
-          }
+          popup.location.href = url;
 
           popupWatcher = window.setInterval(() => {
             if (oauthSettled) {
               stopPopupWatcher();
               return;
             }
-            if (popup.closed) {
-              pb.cancelRequest(requestKey);
+            // Popup also closes on successful OAuth — wait before cancelling.
+            if (popup.closed && closeCancelTimer === null) {
+              closeCancelTimer = window.setTimeout(() => {
+                if (!oauthSettled) {
+                  pb.cancelRequest(requestKey);
+                }
+              }, 4000);
             }
           }, 300);
         },
