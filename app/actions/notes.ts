@@ -1,6 +1,7 @@
 "use server";
 
 import { getServerPB } from "@/lib/pocketbase/server";
+import { recordOwnedByUser } from "@/lib/pocketbase/relation-id";
 import { requireAuth } from "@/lib/auth";
 import { isPocketBaseRecordId } from "@/lib/security/pocketbase-id";
 import type { ActionResult } from "@/lib/types";
@@ -43,21 +44,18 @@ export async function createNoteAction(
   if (!title) return { ok: false, error: "Title is required" };
   if (!body) return { ok: false, error: "Note body is required" };
 
-  let recordId: string;
-
   try {
     const pb = await getServerPB();
-    const record = await pb.collection("notes").create(
+    await pb.collection("notes").create(
       notePayload(user.id, title, body, hike)
     );
-    recordId = record.id;
-    revalidatePath("/account/notes");
+    revalidatePath("/account/notes", "page");
   } catch (err) {
     console.error("Create note failed:", err);
     return { ok: false, error: "Could not create note." };
   }
 
-  redirect(`/account/notes/${recordId}`);
+  redirect("/account/notes?created=1");
 }
 
 export async function updateNoteAction(
@@ -76,15 +74,17 @@ export async function updateNoteAction(
   try {
     const pb = await getServerPB();
     const note = await pb.collection("notes").getOne(noteId);
-    if (note.user !== user.id) return { ok: false, error: "Not authorized." };
+    if (!recordOwnedByUser(note.user, user.id)) {
+      return { ok: false, error: "Not authorized." };
+    }
 
     await pb.collection("notes").update(noteId, {
       title,
       body,
       hike: hike && isPocketBaseRecordId(hike) ? hike : null,
     });
-    revalidatePath("/account/notes");
-    revalidatePath(`/account/notes/${noteId}`);
+    revalidatePath("/account/notes", "page");
+    revalidatePath(`/account/notes/${noteId}`, "page");
     return { ok: true };
   } catch (err) {
     console.error("Update note failed:", err);
@@ -98,9 +98,9 @@ export async function deleteNoteAction(noteId: string): Promise<void> {
 
   try {
     const note = await pb.collection("notes").getOne(noteId);
-    if (note.user !== user.id) return;
+    if (!recordOwnedByUser(note.user, user.id)) return;
     await pb.collection("notes").delete(noteId);
-    revalidatePath("/account/notes");
+    revalidatePath("/account/notes", "page");
   } catch (err) {
     console.error("Delete note failed:", err);
     return;

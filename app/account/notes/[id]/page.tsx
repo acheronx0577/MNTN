@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import NoteForm from "@/components/account/NoteForm";
 import { deleteNoteAction, updateNoteAction } from "@/app/actions/notes";
 import { getLinkableHikes } from "@/lib/hikes";
+import { recordOwnedByUser } from "@/lib/pocketbase/relation-id";
 import { getServerPB } from "@/lib/pocketbase/server";
 import { requireAuth } from "@/lib/auth";
 
@@ -22,7 +23,7 @@ export default async function EditNotePage({ params }: Props) {
   let note;
   try {
     note = await pb.collection("notes").getOne(id);
-    if (note.user !== user.id) notFound();
+    if (!recordOwnedByUser(note.user, user.id)) notFound();
   } catch {
     notFound();
   }

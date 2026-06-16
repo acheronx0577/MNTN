@@ -1,34 +1,24 @@
 import Link from "next/link";
+import { unstable_noStore as noStore } from "next/cache";
 import NotesList from "@/components/account/NotesList";
-import { getServerPB } from "@/lib/pocketbase/server";
+import { listUserNotes } from "@/lib/notes-server";
 import { requireAuth } from "@/lib/auth";
-import type { Note } from "@/lib/types";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Notes | MNTN",
 };
 
-export default async function NotesPage() {
-  const user = await requireAuth();
-  const pb = await getServerPB();
+type Props = {
+  searchParams: Promise<{ created?: string }>;
+};
 
-  let notes: Note[] = [];
-  try {
-    const records = await pb.collection("notes").getFullList({
-      filter: `user = "${user.id}"`,
-      sort: "-created",
-    });
-    notes = records.map((r) => ({
-      id: r.id,
-      title: r.title as string,
-      body: r.body as string,
-      hike: r.hike as string | undefined,
-      created: r.created,
-      updated: r.updated,
-    }));
-  } catch {
-    notes = [];
-  }
+export default async function NotesPage({ searchParams }: Props) {
+  noStore();
+  const user = await requireAuth();
+  const { created } = await searchParams;
+  const { notes, error } = await listUserNotes(user.id);
 
   return (
     <>
@@ -49,11 +39,21 @@ export default async function NotesPage() {
           href="/account/notes/new"
           className="btn-primary"
           style={{ width: "auto", flexShrink: 0 }}
-          prefetch
+          prefetch={false}
         >
           New note
         </Link>
       </div>
+      {created && notes.length > 0 && (
+        <div className="form-alert form-alert--success" style={{ marginBottom: "16px" }}>
+          Note saved. It appears in your list below.
+        </div>
+      )}
+      {error && (
+        <div className="form-alert form-alert--error" style={{ marginBottom: "16px" }}>
+          {error}
+        </div>
+      )}
       <NotesList notes={notes} />
     </>
   );

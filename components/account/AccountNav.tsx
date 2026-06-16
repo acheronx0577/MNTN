@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { logoutAction } from "@/app/actions/auth";
 
 const links = [
@@ -16,6 +16,11 @@ type AccountNavProps = {
 
 export default function AccountNav({ userName }: AccountNavProps) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleNavClick = () => {
+    router.refresh();
+  };
 
   return (
     <nav className="account-nav" aria-label="Account navigation">
@@ -31,6 +36,8 @@ export default function AccountNav({ userName }: AccountNavProps) {
         <Link
           key={link.href}
           href={link.href}
+          prefetch={false}
+          onClick={handleNavClick}
           className={`account-nav__link ${
             pathname === link.href ||
             (link.href !== "/account" && pathname.startsWith(link.href))

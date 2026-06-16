@@ -10,7 +10,11 @@ export default function NotesList({ notes }: NotesListProps) {
   if (notes.length === 0) {
     return (
       <p className="empty-state">
-        No notes yet. Create one to track trail plans and gear lists.
+        No notes yet.{" "}
+        <Link href="/account/notes/new" prefetch={false}>
+          Create one
+        </Link>{" "}
+        to track trail plans and gear lists.
       </p>
     );
   }
