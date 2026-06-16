@@ -57,7 +57,7 @@ export async function toggleNoteStarAction(
         return {
           ok: false,
           error:
-            "Note favorites are not set up yet. In PocketBase, create a note_favorites collection (user + note relations) or run project migrations.",
+            "Note favorites are not set up in PocketBase. Import pocketbase/note_favorites.import.json (Settings → Import collections) or create the note_favorites collection — see README.",
         };
       }
     }

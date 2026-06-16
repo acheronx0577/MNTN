@@ -65,7 +65,7 @@ export async function listStarredNotes(): Promise<{
         return {
           notes: [],
           error:
-            "Note favorites are not set up in PocketBase. Run migrations or create the note_favorites collection.",
+            "Note favorites are not set up in PocketBase. Import pocketbase/note_favorites.import.json (Settings → Import collections) or see README.",
         };
       }
       if (err.status === 401 || err.status === 403) {

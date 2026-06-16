@@ -7,6 +7,7 @@
     "dev:all": "docker compose -f pocketbase/docker-compose.yml up -d && next dev",
     "dev:pb": "docker compose -f pocketbase/docker-compose.yml up",
     "dev:pb:stop": "docker compose -f pocketbase/docker-compose.yml down",
+    "pb:restart": "docker compose -f pocketbase/docker-compose.yml restart pocketbase",
     "pb:superuser": "docker compose -f pocketbase/docker-compose.yml exec pocketbase /usr/local/bin/pocketbase --dir=/pb_data superuser upsert",
     "build": "next build",
     "start": "next start",
