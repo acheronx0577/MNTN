@@ -5,7 +5,9 @@ import { getPocketBaseUrl } from "./url";
 export const PB_COOKIE = "pb_auth";
 
 export function createServerPB() {
-  return new PocketBase(getPocketBaseUrl());
+  const pb = new PocketBase(getPocketBaseUrl());
+  pb.autoCancellation(false);
+  return pb;
 }
 
 export async function getServerPB() {

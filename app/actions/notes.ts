@@ -2,6 +2,7 @@
 
 import { getServerPB } from "@/lib/pocketbase/server";
 import { recordOwnedByUser } from "@/lib/pocketbase/relation-id";
+import { countUserNotes, isAtNoteLimit, MAX_USER_NOTES } from "@/lib/notes-server";
 import { requireAuth } from "@/lib/auth";
 import { isPocketBaseRecordId } from "@/lib/security/pocketbase-id";
 import type { ActionResult } from "@/lib/types";
@@ -46,6 +47,15 @@ export async function createNoteAction(
 
   try {
     const pb = await getServerPB();
+    const noteCount = await countUserNotes(pb);
+
+    if (isAtNoteLimit(noteCount)) {
+      return {
+        ok: false,
+        error: `You can only have ${MAX_USER_NOTES} notes. Delete one to create another.`,
+      };
+    }
+
     await pb.collection("notes").create(
       notePayload(user.id, title, body, hike)
     );

@@ -2,8 +2,9 @@ import PocketBase, { ClientResponseError } from "pocketbase";
 import { getServerPB, setAuthCookie } from "@/lib/pocketbase/server";
 import type { Note } from "@/lib/types";
 
-function notesLoadError(err: unknown): string {
-  if (err instanceof ClientResponseError) {
+export const MAX_USER_NOTES = 10;
+
+function notesLoadError(err: unknown): string {  if (err instanceof ClientResponseError) {
     if (err.status === 401 || err.status === 403) {
       return "Your session expired or cannot access notes. Sign out and sign in again.";
     }
@@ -13,19 +14,33 @@ function notesLoadError(err: unknown): string {
     if (err.status === 0 || err.message.toLowerCase().includes("fetch")) {
       return "Cannot reach PocketBase. Check NEXT_PUBLIC_POCKETBASE_URL in your environment.";
     }
+    if (err.message) {
+      return `Could not load notes: ${err.message}`;
+    }
   }
 
   return "Could not load notes. Refresh the page or try again in a moment.";
 }
 
 async function fetchUserNotes(pb: PocketBase) {
-  return pb.collection("notes").getFullList({
-    sort: "-created",
-  });
+  // PocketBase returns 400 when sorting notes by system date fields (created/updated).
+  const records = await pb.collection("notes").getFullList();
+
+  return records.sort(
+    (a, b) => new Date(b.created).getTime() - new Date(a.created).getTime()
+  );
 }
 
-export async function listUserNotes(_userId: string): Promise<{
-  notes: Note[];
+export async function countUserNotes(pb: PocketBase): Promise<number> {
+  const page = await pb.collection("notes").getList(1, 1);
+  return page.totalItems;
+}
+
+export function isAtNoteLimit(count: number): boolean {
+  return count >= MAX_USER_NOTES;
+}
+
+export async function listUserNotes(_userId: string): Promise<{  notes: Note[];
   error?: string;
 }> {
   try {

@@ -1,20 +1,28 @@
 import Link from "next/link";
 import { deleteNoteAction } from "@/app/actions/notes";
+import { MAX_USER_NOTES } from "@/lib/notes-server";
 import type { Note } from "@/lib/types";
 
 type NotesListProps = {
   notes: Note[];
+  atLimit?: boolean;
 };
 
-export default function NotesList({ notes }: NotesListProps) {
+export default function NotesList({ notes, atLimit = false }: NotesListProps) {
   if (notes.length === 0) {
     return (
       <p className="empty-state">
         No notes yet.{" "}
-        <Link href="/account/notes/new" className="text-link" prefetch={false}>
-          Create one
-        </Link>{" "}
-        to track trail plans and gear lists.
+        {atLimit ? (
+          <>You&apos;ve reached the {MAX_USER_NOTES}-note limit.</>
+        ) : (
+          <>
+            <Link href="/account/notes/new" className="text-link" prefetch={false}>
+              Create one
+            </Link>{" "}
+            to track trail plans and gear lists.
+          </>
+        )}
       </p>
     );
   }

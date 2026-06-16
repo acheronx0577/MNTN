@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { unstable_noStore as noStore } from "next/cache";
 import NotesList from "@/components/account/NotesList";
-import { listUserNotes } from "@/lib/notes-server";
+import {
+  isAtNoteLimit,
+  listUserNotes,
+  MAX_USER_NOTES,
+} from "@/lib/notes-server";
 import { requireAuth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -19,6 +23,7 @@ export default async function NotesPage({ searchParams }: Props) {
   const user = await requireAuth();
   const { created } = await searchParams;
   const { notes, error } = await listUserNotes(user.id);
+  const atLimit = isAtNoteLimit(notes.length);
 
   return (
     <>
@@ -32,18 +37,51 @@ export default async function NotesPage({ searchParams }: Props) {
           gap: "16px",
         }}
       >
-        <h1 className="account-welcome" style={{ marginBottom: 0 }}>
-          Trail notes
-        </h1>
-        <Link
-          href="/account/notes/new"
-          className="btn-primary"
-          style={{ width: "auto", flexShrink: 0 }}
-          prefetch={false}
-        >
-          New note
-        </Link>
+        <div>
+          <h1 className="account-welcome" style={{ marginBottom: 0 }}>
+            Trail notes
+          </h1>
+          <p
+            style={{
+              margin: "8px 0 0",
+              fontSize: "14px",
+              color: "rgba(255, 255, 255, 0.5)",
+            }}
+          >
+            {notes.length}/{MAX_USER_NOTES} notes
+          </p>
+        </div>
+        {atLimit ? (
+          <span
+            className="btn-primary"
+            style={{
+              width: "auto",
+              flexShrink: 0,
+              opacity: 0.5,
+              cursor: "not-allowed",
+            }}
+            aria-disabled="true"
+            title={`Maximum of ${MAX_USER_NOTES} notes reached`}
+          >
+            New note
+          </span>
+        ) : (
+          <Link
+            href="/account/notes/new"
+            className="btn-primary"
+            style={{ width: "auto", flexShrink: 0 }}
+            prefetch={false}
+          >
+            New note
+          </Link>
+        )}
       </div>
+      {atLimit && (
+        <div className="form-alert form-alert--error" style={{ marginBottom: "16px" }}>
+          You&apos;ve reached the limit of {MAX_USER_NOTES} notes. Delete one to
+          create another.
+        </div>
+      )}
       {created && notes.length > 0 && (
         <div className="form-alert form-alert--success" style={{ marginBottom: "16px" }}>
           Note saved. It appears in your list below.
@@ -54,7 +92,7 @@ export default async function NotesPage({ searchParams }: Props) {
           {error}
         </div>
       )}
-      <NotesList notes={notes} />
+      <NotesList notes={notes} atLimit={atLimit} />
     </>
   );
 }
