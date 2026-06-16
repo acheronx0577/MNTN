@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef } from "react";
+import { scrollToTarget } from "@/lib/lenis";
 import Logo from "./Logo";
 
 const menuLinks = [
@@ -91,8 +92,8 @@ export default function Header({ user }: HeaderProps) {
       if (pathname !== "/" || !id) return;
 
       event.preventDefault();
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
       window.history.pushState(null, "", `/#${id}`);
+      scrollToTarget(`#${id}`);
     },
     [closeMenu, pathname]
   );
@@ -105,7 +106,8 @@ export default function Header({ user }: HeaderProps) {
 
       event.preventDefault();
       window.history.pushState(null, "", "/");
-      document.getElementById("section-00")?.scrollIntoView({ behavior: "smooth" });
+      headerRef.current?.classList.remove("on-scroll");
+      scrollToTarget(0);
     },
     [closeMenu, pathname]
   );

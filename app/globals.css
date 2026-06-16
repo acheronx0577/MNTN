@@ -138,7 +138,7 @@ h6 {
   -webkit-tap-highlight-color: transparent;
   border-radius: 6px;
   flex-shrink: 0;
-  transition: opacity 0.15s ease, transform 0.12s ease;
+  transition: opacity 0.2s ease;
 }
 
 .brand:hover,
@@ -147,8 +147,7 @@ h6 {
 }
 
 .brand:active {
-  opacity: 1;
-  transform: scale(0.97);
+  opacity: 0.65;
 }
 
 .brand svg {
@@ -169,6 +168,7 @@ h6 {
   transform: translateX(-150%);
   z-index: 10;
   background-color: #0b1d26;
+  pointer-events: none;
 }
 
 .menu-header {
@@ -181,6 +181,7 @@ h6 {
 
 .menu-is-active .menu {
   transform: translateX(0%);
+  pointer-events: auto;
 }
 
 .menu-inner {
@@ -320,12 +321,14 @@ h6 {
   background-color: #000;
   visibility: hidden;
   opacity: 0;
+  pointer-events: none;
   transition: all 0.4s ease-in-out;
 }
 
 .menu-is-active .header-backdrop {
   visibility: visible;
   opacity: 0.5;
+  pointer-events: auto;
 }
 
 .burger.is-active .burger-line:nth-child(1) {
@@ -791,6 +794,16 @@ footer {
       inset 0 -1px 0 rgba(255, 255, 255, 0.15);
   }
 
+  body:not(:has(.hero-section)) .navbar {
+    padding: 24px 0;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  body:not(:has(.hero-section)) .page-shell {
+    padding-top: 120px;
+  }
+
   .burger {
     display: none;
     visibility: hidden;
@@ -812,6 +825,7 @@ footer {
     left: 0;
     right: unset;
     transform: unset;
+    pointer-events: auto;
   }
 
   .menu-inner {
@@ -997,7 +1011,7 @@ footer {
 
 .page-shell {
   min-height: 100vh;
-  padding: 120px 0 80px;
+  padding: 128px 0 80px;
   background-color: var(--color-bg-deep);
   background-image: linear-gradient(
     180deg,
@@ -1548,6 +1562,14 @@ body:has(.auth-layout--split) .page-shell.auth-layout--split::before {
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: transform 0.15s ease, background 0.2s ease, opacity 0.2s ease;
+}
+
+a.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-sizing: border-box;
 }
 
 .btn-primary--icon {

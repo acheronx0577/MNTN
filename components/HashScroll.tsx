@@ -1,5 +1,6 @@
 "use client";
 
+import { scrollToTarget } from "@/lib/lenis";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
@@ -12,13 +13,9 @@ export default function HashScroll() {
     const hash = window.location.hash;
     if (!hash) return;
 
-    const id = hash.replace("#", "");
-    const scrollToTarget = () => {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    };
-
-    requestAnimationFrame(scrollToTarget);
-    const timer = window.setTimeout(scrollToTarget, 120);
+    const timer = window.setTimeout(() => {
+      scrollToTarget(hash);
+    }, 150);
 
     return () => window.clearTimeout(timer);
   }, [pathname]);

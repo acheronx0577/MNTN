@@ -45,7 +45,12 @@ export default async function NotesPage() {
         <h1 className="account-welcome" style={{ marginBottom: 0 }}>
           Trail notes
         </h1>
-        <Link href="/account/notes/new" className="btn-primary" style={{ width: "auto" }}>
+        <Link
+          href="/account/notes/new"
+          className="btn-primary"
+          style={{ width: "auto", flexShrink: 0 }}
+          prefetch
+        >
           New note
         </Link>
       </div>

@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
+import { setLenisInstance } from "@/lib/lenis";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,6 +21,8 @@ export default function MntnAnimations() {
         smoothWheel: true,
         wheelMultiplier: 0.85,
       });
+
+      setLenisInstance(lenis);
 
       lenis.on("scroll", ScrollTrigger.update);
 
@@ -138,6 +141,7 @@ export default function MntnAnimations() {
       });
 
       return () => {
+        setLenisInstance(null);
         gsap.ticker.remove(tickerCallback);
         lenis.destroy();
         ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
