@@ -11,7 +11,7 @@ export default function NotesList({ notes }: NotesListProps) {
     return (
       <p className="empty-state">
         No notes yet.{" "}
-        <Link href="/account/notes/new" prefetch={false}>
+        <Link href="/account/notes/new" className="text-link" prefetch={false}>
           Create one
         </Link>{" "}
         to track trail plans and gear lists.

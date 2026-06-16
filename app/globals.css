@@ -2061,6 +2061,28 @@ a.btn-primary {
   padding: var(--space-lg) 0;
 }
 
+.empty-state a,
+.account-content a:not(.btn-primary):not(.account-nav__link) {
+  color: var(--color-accent-gold);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.empty-state a:hover,
+.empty-state a:focus-visible,
+.account-content a:not(.btn-primary):not(.account-nav__link):hover,
+.account-content a:not(.btn-primary):not(.account-nav__link):focus-visible {
+  color: #ffe099;
+  opacity: 0.95;
+}
+
+.empty-state a:visited,
+.account-content a:not(.btn-primary):not(.account-nav__link):visited {
+  color: var(--color-accent-gold);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .auth-card,
   .btn-primary,
