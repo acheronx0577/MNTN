@@ -111,7 +111,6 @@ export async function deleteNoteAction(noteId: string): Promise<void> {
     if (!recordOwnedByUser(note.user, user.id)) return;
     await pb.collection("notes").delete(noteId);
     revalidatePath("/account/notes", "page");
-    revalidatePath("/account/favorites", "page");
   } catch (err) {
     console.error("Delete note failed:", err);
     return;

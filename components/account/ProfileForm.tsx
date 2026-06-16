@@ -21,9 +21,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
 
   return (
     <div className="account-panel">
-      <h2 className="account-welcome" style={{ fontSize: "1.5rem" }}>
-        Your profile
-      </h2>
+      <h2 className="account-section-title">Your profile</h2>
       {state.ok && (
         <div className="form-alert form-alert--success">
           Profile updated successfully.

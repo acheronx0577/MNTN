@@ -27,39 +27,16 @@ export default async function NotesPage({ searchParams }: Props) {
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "24px",
-          flexWrap: "wrap",
-          gap: "16px",
-        }}
-      >
+      <div className="account-page-header">
         <div>
-          <h1 className="account-welcome" style={{ marginBottom: 0 }}>
-            Trail notes
-          </h1>
-          <p
-            style={{
-              margin: "8px 0 0",
-              fontSize: "14px",
-              color: "rgba(255, 255, 255, 0.5)",
-            }}
-          >
+          <h1 className="account-welcome">Trail notes</h1>
+          <p className="account-meta">
             {notes.length}/{MAX_USER_NOTES} notes
           </p>
         </div>
         {atLimit ? (
           <span
-            className="btn-primary"
-            style={{
-              width: "auto",
-              flexShrink: 0,
-              opacity: 0.5,
-              cursor: "not-allowed",
-            }}
+            className="btn-primary btn-primary--inline is-disabled"
             aria-disabled="true"
             title={`Maximum of ${MAX_USER_NOTES} notes reached`}
           >
@@ -68,31 +45,32 @@ export default async function NotesPage({ searchParams }: Props) {
         ) : (
           <Link
             href="/account/notes/new"
-            className="btn-primary"
-            style={{ width: "auto", flexShrink: 0 }}
+            className="btn-primary btn-primary--inline"
             prefetch={false}
           >
             New note
           </Link>
         )}
       </div>
-      {atLimit && (
-        <div className="form-alert form-alert--error" style={{ marginBottom: "16px" }}>
-          You&apos;ve reached the limit of {MAX_USER_NOTES} notes. Delete one to
-          create another.
-        </div>
-      )}
-      {created && notes.length > 0 && (
-        <div className="form-alert form-alert--success" style={{ marginBottom: "16px" }}>
-          Note saved. It appears in your list below.
-        </div>
-      )}
-      {error && (
-        <div className="form-alert form-alert--error" style={{ marginBottom: "16px" }}>
-          {error}
-        </div>
-      )}
-      <NotesList notes={notes} atLimit={atLimit} />
+
+      <div className="account-stack">
+        {atLimit && (
+          <div className="form-alert form-alert--error">
+            You&apos;ve reached the limit of {MAX_USER_NOTES} notes. Delete one
+            to create another.
+          </div>
+        )}
+        {created && notes.length > 0 && (
+          <div className="form-alert form-alert--success">
+            Note saved. It appears in your list below.
+          </div>
+        )}
+        {error && <div className="form-alert form-alert--error">{error}</div>}
+      </div>
+
+      <div className="account-panel account-panel--flush">
+        <NotesList notes={notes} atLimit={atLimit} />
+      </div>
     </>
   );
 }

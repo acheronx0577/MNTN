@@ -11,6 +11,7 @@ export default async function AccountPage() {
   return (
     <>
       <h1 className="account-welcome">Your account</h1>
+      <p className="account-meta">Manage your profile and trail preferences.</p>
       <ProfileForm user={user} />
     </>
   );

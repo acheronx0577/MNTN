@@ -25,7 +25,7 @@ export default function SignupForm() {
       variant="split"
       size="large"
       title="Join MNTN"
-      subtitle="Create an account to track favorites and trail notes"
+      subtitle="Create an account to save hikes and trail notes"
       imageTagline="Start your next adventure on the trail."
       footer={
         <>

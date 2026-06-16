@@ -2,7 +2,7 @@ import ContactForm from "@/components/contact/ContactForm";
 import { getCurrentUser } from "@/lib/auth";
 
 export const metadata = {
-  title: "Contact | AcheronX",
+  title: "Contact | MNTN",
 };
 
 export default async function ContactPage() {
@@ -13,13 +13,18 @@ export default async function ContactPage() {
       <div className="page-shell-inner container">
         <header className="contact-page__header">
           <p className="contact-page__label">Get in touch</p>
-          <h1 className="contact-page__title">Contact AcheronX</h1>
-          <p className="contact-page__copy">Questions about this demo, a project, or working together? Send a message and I&apos;ll get back to you.</p>
+          <h1 className="contact-page__title">Contact MNTN</h1>
+          <p className="contact-page__copy">
+            Questions about gear, trails, or the guide? Send a message and we&apos;ll
+            get back to you.
+          </p>
         </header>
-        <ContactForm
+        <div className="contact-form-wrap account-panel">
+          <ContactForm
           defaultName={user?.name ?? ""}
           defaultEmail={user?.email ?? ""}
         />
+        </div>
       </div>
     </div>
   );

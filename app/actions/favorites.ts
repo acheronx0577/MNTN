@@ -24,7 +24,6 @@ export async function toggleFavoriteAction(
 
     if (existing.items.length > 0) {
       await pb.collection("favorites").delete(existing.items[0].id);
-      revalidatePath("/account/favorites");
       revalidatePath("/");
       return { ok: true, saved: false };
     }
@@ -33,28 +32,10 @@ export async function toggleFavoriteAction(
       user: user.id,
       hike: hikeId,
     });
-    revalidatePath("/account/favorites");
     revalidatePath("/");
     return { ok: true, saved: true };
   } catch {
     return { ok: false, error: "Could not update favorite." };
-  }
-}
-
-export async function removeFavoriteAction(favoriteId: string): Promise<void> {
-  const user = await requireAuth();
-
-  if (!isSafeRecordId(favoriteId)) return;
-
-  const pb = await getServerPB();
-
-  try {
-    const fav = await pb.collection("favorites").getOne(favoriteId);
-    if (fav.user !== user.id) return;
-    await pb.collection("favorites").delete(favoriteId);
-    revalidatePath("/account/favorites");
-  } catch {
-    // ignore
   }
 }
 

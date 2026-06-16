@@ -1,4 +1,3 @@
-import Link from "next/link";
 import NoteForm from "@/components/account/NoteForm";
 import { getLinkableHikes } from "@/lib/hikes";
 import { getServerPB } from "@/lib/pocketbase/server";
@@ -8,6 +7,7 @@ import {
   MAX_USER_NOTES,
 } from "@/lib/notes-server";
 import { requireAuth } from "@/lib/auth";
+import Link from "next/link";
 
 export const metadata = {
   title: "New note | MNTN",
@@ -40,16 +40,12 @@ export default async function NewNotePage() {
   return (
     <>
       <h1 className="account-welcome">New note</h1>
-      <p
-        style={{
-          margin: "0 0 16px",
-          fontSize: "14px",
-          color: "rgba(255, 255, 255, 0.5)",
-        }}
-      >
+      <p className="account-meta">
         {noteCount}/{MAX_USER_NOTES} notes used
       </p>
-      <NoteForm hikes={hikes.map((h) => ({ id: h.id, title: h.title }))} />
+      <div className="account-panel">
+        <NoteForm hikes={hikes.map((h) => ({ id: h.id, title: h.title }))} />
+      </div>
     </>
   );
 }

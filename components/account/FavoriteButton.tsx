@@ -24,14 +24,20 @@ export default function FavoriteButton({
     });
   };
 
+  const label = pending ? "Saving hike" : saved ? "Remove saved hike" : "Save hike";
+
   return (
     <button
       type="button"
       className={`favorite-btn ${saved ? "is-saved" : ""}`}
       onClick={handleClick}
       disabled={pending}
+      aria-pressed={saved}
+      aria-label={label}
+      title={label}
     >
-      {pending ? "Saving…" : saved ? "Saved" : "Save hike"}
+      <i className={`bx ${saved ? "bxs-heart" : "bx-heart"}`} aria-hidden="true" />
+      <span>{pending ? "Saving…" : saved ? "Saved" : "Save hike"}</span>
     </button>
   );
 }
