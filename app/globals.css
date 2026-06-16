@@ -2333,52 +2333,6 @@ a.btn-primary {
   outline-offset: 2px;
 }
 
-.favorite-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 10px 18px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--color-accent-gold);
-  background: rgba(251, 215, 132, 0.1);
-  border: 1px solid var(--color-accent-gold);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  margin-top: 16px;
-  transition: background 0.2s ease, transform 0.15s ease, color 0.2s ease;
-}
-
-.favorite-btn .bx {
-  font-size: 18px;
-  line-height: 1;
-}
-
-.favorite-btn:hover:not(:disabled) {
-  background: rgba(251, 215, 132, 0.2);
-  transform: translateY(-1px);
-}
-
-.favorite-btn:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.favorite-btn:focus-visible {
-  outline: 2px solid var(--color-accent-gold);
-  outline-offset: 2px;
-}
-
-.favorite-btn:disabled {
-  opacity: 0.65;
-  cursor: wait;
-}
-
-.favorite-btn.is-saved {
-  background: var(--color-accent-gold);
-  color: var(--color-bg-deep);
-}
-
 .notes-list {
   display: flex;
   flex-direction: column;
@@ -2461,13 +2415,11 @@ a.btn-primary {
   .oauth-btn,
   .form-field input,
   .form-field textarea,
-  .favorite-btn,
   .note-item,
   .account-nav__link {
     transition: none;
   }
 
-  .favorite-btn:hover:not(:disabled),
   .note-item:hover {
     transform: none;
   }

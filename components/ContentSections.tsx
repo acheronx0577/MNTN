@@ -1,11 +1,8 @@
 import { ReadMoreIcon } from "./Icons";
-import FavoriteButton from "./account/FavoriteButton";
 import type { Hike } from "@/lib/types";
 
 type ContentSectionsProps = {
   hikes: Hike[];
-  favoriteHikeIds: string[];
-  isLoggedIn: boolean;
 };
 
 const TITLE_LINES: Record<string, [string, string]> = {
@@ -27,11 +24,7 @@ function getTitleLines(hike: Hike): [string, string] {
   return [words.slice(0, mid).join(" "), words.slice(mid).join(" ")];
 }
 
-export default function ContentSections({
-  hikes,
-  favoriteHikeIds,
-  isLoggedIn,
-}: ContentSectionsProps) {
+export default function ContentSections({ hikes }: ContentSectionsProps) {
   return (
     <section className="content-section section">
       <div className="container">
@@ -60,12 +53,6 @@ export default function ContentSections({
                     read more
                     <ReadMoreIcon />
                   </a>
-                  {isLoggedIn && (
-                    <FavoriteButton
-                      hikeId={hike.id}
-                      initialSaved={favoriteHikeIds.includes(hike.id)}
-                    />
-                  )}
                 </div>
               </div>
             </div>

@@ -100,7 +100,11 @@ export default function SiteHub() {
           sessionStorage.getItem(VIEW_SESSION_KEY) === "1";
         if (!seen) {
           viewRecordedRef.current = true;
-          await fetch("/api/site-views", { method: "POST" });
+          const postRes = await fetch("/api/site-views", { method: "POST" });
+          const postData = await postRes.json().catch(() => ({}));
+          if (postData.ok === true && typeof postData.count === "number") {
+            setStats((prev) => ({ ...prev, viewCount: postData.count }));
+          }
           sessionStorage.setItem(VIEW_SESSION_KEY, "1");
         }
       } catch {
