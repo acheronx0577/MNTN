@@ -3,6 +3,7 @@ import NoteForm from "@/components/account/NoteForm";
 import NoteStarButton from "@/components/account/NoteStarButton";
 import { deleteNoteAction, updateNoteAction } from "@/app/actions/notes";
 import { getLinkableHikes } from "@/lib/hikes";
+import { isNoteStarred } from "@/lib/note-favorites-server";
 import { recordOwnedByUser } from "@/lib/pocketbase/relation-id";
 import { getServerPB } from "@/lib/pocketbase/server";
 import { requireAuth } from "@/lib/auth";
@@ -30,6 +31,7 @@ export default async function EditNotePage({ params }: Props) {
   }
 
   const hikes = await getLinkableHikes();
+  const noteStarred = await isNoteStarred(id);
   const boundUpdate = updateNoteAction.bind(null, id);
 
   return (
@@ -49,8 +51,8 @@ export default async function EditNotePage({ params }: Props) {
         </h1>
         <NoteStarButton
           noteId={id}
-          initialStarred={Boolean(note.starred)}
-          label={note.starred ? "Starred" : "Add to favorites"}
+          initialStarred={noteStarred}
+          label={noteStarred ? "Starred" : "Add to favorites"}
         />
       </div>
       <NoteForm

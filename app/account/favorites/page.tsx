@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getServerPB } from "@/lib/pocketbase/server";
-import { listStarredNotes } from "@/lib/notes-server";
+import { listStarredNotes } from "@/lib/note-favorites-server";
 import { requireAuth } from "@/lib/auth";
 import { removeFavoriteAction } from "@/app/actions/favorites";
 import NoteStarButton from "@/components/account/NoteStarButton";
@@ -23,7 +23,7 @@ type FavoriteRecord = {
 export default async function FavoritesPage() {
   const user = await requireAuth();
   const pb = await getServerPB();
-  const { notes: starredNotes } = await listStarredNotes();
+  const { notes: starredNotes, error: starredError } = await listStarredNotes();
 
   let favorites: FavoriteRecord[] = [];
   try {
@@ -42,6 +42,11 @@ export default async function FavoritesPage() {
   return (
     <>
       <h1 className="account-welcome">Favorites</h1>
+      {starredError && (
+        <div className="form-alert form-alert--error" style={{ marginBottom: "16px" }}>
+          {starredError}
+        </div>
+      )}
 
       {isEmpty ? (
         <p className="empty-state">

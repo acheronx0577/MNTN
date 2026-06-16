@@ -7,9 +7,14 @@ import type { Note } from "@/lib/types";
 type NotesListProps = {
   notes: Note[];
   atLimit?: boolean;
+  starredNoteIds?: string[];
 };
 
-export default function NotesList({ notes, atLimit = false }: NotesListProps) {
+export default function NotesList({
+  notes,
+  atLimit = false,
+  starredNoteIds = [],
+}: NotesListProps) {
   if (notes.length === 0) {
     return (
       <p className="empty-state">
@@ -32,7 +37,10 @@ export default function NotesList({ notes, atLimit = false }: NotesListProps) {
     <ul className="notes-list">
       {notes.map((note) => (
         <li key={note.id} className="note-item">
-          <NoteStarButton noteId={note.id} initialStarred={note.starred} />
+          <NoteStarButton
+            noteId={note.id}
+            initialStarred={starredNoteIds.includes(note.id)}
+          />
           <Link href={`/account/notes/${note.id}`} className="note-item__title">
             {note.title}
           </Link>

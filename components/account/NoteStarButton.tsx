@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { toggleNoteStarAction } from "@/app/actions/notes";
+import { toggleNoteStarAction } from "@/app/actions/note-favorites";
 
 type NoteStarButtonProps = {
   noteId: string;

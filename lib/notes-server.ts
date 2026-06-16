@@ -57,12 +57,10 @@ export async function listStarredNotes(): Promise<{
   notes: Note[];
   error?: string;
 }> {
-  const { notes, error } = await listUserNotes("");
-  if (error) return { notes: [], error };
-
-  return {
-    notes: notes.filter((note) => note.starred),
-  };
+  const { listStarredNotes: listFromFavorites } = await import(
+    "@/lib/note-favorites-server"
+  );
+  return listFromFavorites();
 }
 
 export async function listUserNotes(_userId: string): Promise<{
