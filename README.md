@@ -126,46 +126,8 @@ Redeploy after adding variables.
 ### 3. PocketBase (production)
 
 - Run migrations from `pocketbase/pb_migrations/` (local Docker applies them on start; restart with `npm run pb:restart`)
-- **Starred notes** need a `note_favorites` collection (see below)
 - **Collections → users → Options → OAuth2**: enable Google/GitHub; set OAuth redirect to your PocketBase URL, e.g. `https://pb.yourdomain.com/api/oauth2-redirect`
 - Allow your Vercel site origin if needed for browser OAuth (PocketBase CORS / trusted origins)
-
-#### Starred notes: `note_favorites` collection
-
-If starring notes shows *"Note favorites are not set up yet"*, add this collection in PocketBase.
-
-**Option A — Create manually (recommended on PocketBase Cloud)**
-
-1. **Collections** → **New collection** → name: `note_favorites`
-2. Add fields:
-   - `user` — Relation → `users` — Required — Max select: **1** — Cascade delete: **on**
-   - `note` — Relation → `notes` — Required — Max select: **1** — Cascade delete: **on**
-3. **API Rules** — use these for **List**, **View**, **Update**, and **Delete**:
-
-```
-@request.auth.id != "" && user = @request.auth.id
-```
-
-For **Create rule** only, use:
-
-```
-@request.auth.id != "" && @request.body.user = @request.auth.id
-```
-
-4. Save the collection, refresh your MNTN site, and try starring a note again
-
-**Option B — Import JSON**
-
-PocketBase's import UI requires each collection to have an `"id"` field (the repo file includes `"id": "pbc_note_favorites"`). Relation fields also need **collection IDs**, not names.
-
-1. Open PocketBase admin → **Settings** → **Export collections**
-2. In the exported JSON, find the object with `"name": "notes"` and copy its `"id"` (e.g. `pbc_3395098727`)
-3. Open `pocketbase/note_favorites.import.json`, replace `__NOTES_COLLECTION_ID__` with that ID
-4. **Settings** → **Import collections** → paste the edited JSON
-5. If the error clears and you see **Added → note_favorites**, click **Review** → confirm (leave **Delete missing** off)
-6. Refresh your MNTN site and try starring a note again
-
-If import still fails on confirm, check **Logs** in the PocketBase admin, or use Option A (manual creation — no JSON needed).
 
 ### 4. Custom domain (optional)
 

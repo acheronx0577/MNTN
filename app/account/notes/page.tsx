@@ -6,7 +6,6 @@ import {
   listUserNotes,
   MAX_USER_NOTES,
 } from "@/lib/notes-server";
-import { getStarredNoteIds } from "@/lib/note-favorites-server";
 import { requireAuth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -24,7 +23,6 @@ export default async function NotesPage({ searchParams }: Props) {
   const user = await requireAuth();
   const { created } = await searchParams;
   const { notes, error } = await listUserNotes(user.id);
-  const starredNoteIds = await getStarredNoteIds();
   const atLimit = isAtNoteLimit(notes.length);
 
   return (
@@ -94,11 +92,7 @@ export default async function NotesPage({ searchParams }: Props) {
           {error}
         </div>
       )}
-      <NotesList
-        notes={notes}
-        atLimit={atLimit}
-        starredNoteIds={[...starredNoteIds]}
-      />
+      <NotesList notes={notes} atLimit={atLimit} />
     </>
   );
 }

@@ -14,7 +14,6 @@ export type Note = {
   title: string;
   body: string;
   hike?: string;
-  starred?: boolean;
   created: string;
   updated: string;
 };

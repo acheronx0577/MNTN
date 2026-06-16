@@ -1,9 +1,7 @@
 import { notFound } from "next/navigation";
 import NoteForm from "@/components/account/NoteForm";
-import NoteStarButton from "@/components/account/NoteStarButton";
 import { deleteNoteAction, updateNoteAction } from "@/app/actions/notes";
 import { getLinkableHikes } from "@/lib/hikes";
-import { isNoteStarred } from "@/lib/note-favorites-server";
 import { recordOwnedByUser } from "@/lib/pocketbase/relation-id";
 import { getServerPB } from "@/lib/pocketbase/server";
 import { requireAuth } from "@/lib/auth";
@@ -31,30 +29,11 @@ export default async function EditNotePage({ params }: Props) {
   }
 
   const hikes = await getLinkableHikes();
-  const noteStarred = await isNoteStarred(id);
   const boundUpdate = updateNoteAction.bind(null, id);
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: "16px",
-          flexWrap: "wrap",
-          marginBottom: "8px",
-        }}
-      >
-        <h1 className="account-welcome" style={{ marginBottom: 0 }}>
-          Edit note
-        </h1>
-        <NoteStarButton
-          noteId={id}
-          initialStarred={noteStarred}
-          label={noteStarred ? "Starred" : "Add to favorites"}
-        />
-      </div>
+      <h1 className="account-welcome">Edit note</h1>
       <NoteForm
         hikes={hikes.map((h) => ({ id: h.id, title: h.title }))}
         defaultTitle={note.title as string}

@@ -47,20 +47,9 @@ export function mapNoteRecord(record: RecordModel): Note {
     title: record.title as string,
     body: record.body as string,
     hike: record.hike as string | undefined,
-    starred: record.starred === true,
     created: record.created,
     updated: record.updated,
   };
-}
-
-export async function listStarredNotes(): Promise<{
-  notes: Note[];
-  error?: string;
-}> {
-  const { listStarredNotes: listFromFavorites } = await import(
-    "@/lib/note-favorites-server"
-  );
-  return listFromFavorites();
 }
 
 export async function listUserNotes(_userId: string): Promise<{
