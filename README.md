@@ -29,9 +29,9 @@
 
 ## Features
 
-- Landing page with scroll animations
+- Landing page with scroll animations and **left-side site metrics** (views, CPU/RAM, GitHub link)
 - User auth (email/password + Google/GitHub OAuth)
-- Profile, favorites, and trail notes
+- Profile and trail notes
 - Contact form (PocketBase first, then Resend)
 - Design system documented in [DESIGN.md](./DESIGN.md)
 
@@ -49,7 +49,17 @@ npm install
 cp .env.local.example .env.local
 ```
 
-Edit `.env.local` with your PocketBase URL and Resend keys.
+Edit `.env.local` with your PocketBase URL, Resend keys, and (optional) admin credentials for site view counts.
+
+For **website view counts** in the left metrics panel, set the same PocketBase superuser credentials used for admin:
+
+```bash
+POCKETBASE_ADMIN_EMAIL=you@example.com
+POCKETBASE_ADMIN_PASSWORD=yourpassword
+NEXT_PUBLIC_GITHUB_URL=https://github.com/your-org/MNTN-Landing-Page-UI-main
+```
+
+Restart PocketBase after pulling so the `site_stats` migration runs (`npm run pb:restart`).
 
 ### 3. Start PocketBase
 

@@ -4,6 +4,7 @@ import HeroSection from "@/components/HeroSection";
 import HashScroll from "@/components/HashScroll";
 import MntnAnimations from "@/components/MntnAnimations";
 import SideSlider from "@/components/SideSlider";
+import SiteHub from "@/components/SiteHub";
 import { getCurrentUser } from "@/lib/auth";
 import { getHikes } from "@/lib/hikes";
 import { getServerPB } from "@/lib/pocketbase/server";
@@ -29,6 +30,7 @@ export default async function Home() {
     <>
       <HashScroll />
       <MntnAnimations />
+      <SiteHub />
       <main>
         <HeroSection />
         <ContentSections
