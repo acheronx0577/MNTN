@@ -1,5 +1,6 @@
 [
   {
+    "id": "pbc_note_favorites",
     "name": "note_favorites",
     "type": "base",
     "fields": [

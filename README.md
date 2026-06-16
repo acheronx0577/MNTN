@@ -156,15 +156,16 @@ For **Create rule** only, use:
 
 **Option B — Import JSON**
 
-PocketBase import requires **collection IDs**, not names. The `user` field must use `_pb_users_auth_`; the `note` field must use your instance's `notes` collection ID (different on every PocketBase).
+PocketBase's import UI requires each collection to have an `"id"` field (the repo file includes `"id": "pbc_note_favorites"`). Relation fields also need **collection IDs**, not names.
 
 1. Open PocketBase admin → **Settings** → **Export collections**
 2. In the exported JSON, find the object with `"name": "notes"` and copy its `"id"` (e.g. `pbc_3395098727`)
 3. Open `pocketbase/note_favorites.import.json`, replace `__NOTES_COLLECTION_ID__` with that ID
-4. **Settings** → **Import collections** → paste the edited JSON → confirm (leave **Delete missing** off)
-5. Refresh your MNTN site and try starring a note again
+4. **Settings** → **Import collections** → paste the edited JSON
+5. If the error clears and you see **Added → note_favorites**, click **Review** → confirm (leave **Delete missing** off)
+6. Refresh your MNTN site and try starring a note again
 
-If import still fails, check **Logs** in the PocketBase admin for the exact validation error, or use Option A above.
+If import still fails on confirm, check **Logs** in the PocketBase admin, or use Option A (manual creation — no JSON needed).
 
 ### 4. Custom domain (optional)
 
