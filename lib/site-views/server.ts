@@ -1,5 +1,6 @@
 import { createServerPB } from "@/lib/pocketbase/server";
 import { getAdminPB } from "@/lib/pocketbase/admin";
+import { ensureSiteStatsCollection } from "@/lib/site-views/ensure";
 
 const GLOBAL_KEY = "global";
 
@@ -13,6 +14,8 @@ async function getGlobalRecordPublic() {
 }
 
 async function getGlobalRecordAdmin(pb: NonNullable<Awaited<ReturnType<typeof getAdminPB>>>) {
+  await ensureSiteStatsCollection(pb);
+
   try {
     return await pb.collection("site_stats").getFirstListItem(`key = "${GLOBAL_KEY}"`);
   } catch {

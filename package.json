@@ -9,6 +9,8 @@
     "dev:pb:stop": "docker compose -f pocketbase/docker-compose.yml down",
     "pb:restart": "docker compose -f pocketbase/docker-compose.yml restart pocketbase",
     "pb:superuser": "docker compose -f pocketbase/docker-compose.yml exec pocketbase /usr/local/bin/pocketbase --dir=/pb_data superuser upsert",
+    "verify:site-views": "node pocketbase/scripts/verify-site-views.mjs",
+    "import:site-stats": "node pocketbase/scripts/import-site-stats.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

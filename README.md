@@ -49,22 +49,16 @@ npm install
 cp .env.local.example .env.local
 ```
 
-Edit `.env.local` with your PocketBase URL, Resend keys, and (optional) admin credentials for site view counts.
+Edit `.env.local` with your PocketBase URL, Resend keys, and admin credentials for site view counts.
 
-For **website view counts** in the left metrics panel, add your PocketBase **superuser** credentials to Vercel (Settings → Environment Variables):
+For **website view counts**, see **[pocketbase/SITE_VIEWS_SETUP.md](./pocketbase/SITE_VIEWS_SETUP.md)** (full step-by-step for PocketBase Cloud + Vercel).
 
-```bash
-POCKETBASE_ADMIN_EMAIL=your_pocketbase_admin_email
-POCKETBASE_ADMIN_PASSWORD=your_pocketbase_admin_password
-NEXT_PUBLIC_GITHUB_URL=https://github.com/your-org/MNTN-Landing-Page-UI-main
-```
+Quick checklist:
 
-**PocketBase Cloud:** migrations do not run automatically. Create the `site_stats` collection manually:
-
-1. **Collections** → **New collection** → name: `site_stats`
-2. Fields: `key` (text, required, unique), `views` (number)
-3. **API rules** — List and View: leave **empty** (public read). Create / Update / Delete: leave **locked** (admin only)
-4. **New record**: `key` = `global`, `views` = `0`
+1. PocketBase Cloud → collection `site_stats` with fields `key` + `views`, record `global` / `0`, **List + View rules empty** (public)
+2. Vercel env: `POCKETBASE_ADMIN_EMAIL`, `POCKETBASE_ADMIN_PASSWORD`, `NEXT_PUBLIC_POCKETBASE_URL`
+3. Redeploy Vercel after adding env vars
+4. Verify: `npm run verify:site-views`
 
 Restart local PocketBase after pulling so migrations apply (`npm run pb:restart`).
 
