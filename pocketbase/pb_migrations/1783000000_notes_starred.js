@@ -7,9 +7,8 @@ migrate(
     if (collection.fields.getByName("starred")) return;
 
     collection.fields.add(
-      new Field({
+      new BoolField({
         name: "starred",
-        type: "bool",
         required: false,
       })
     );

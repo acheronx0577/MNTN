@@ -87,6 +87,7 @@ migrate(
         },
         { name: "title", type: "text", required: true, max: 200 },
         { name: "body", type: "text", required: true, max: 10000 },
+        { name: "starred", type: "bool", required: false },
       ],
       listRule: '@request.auth.id != "" && user = @request.auth.id',
       viewRule: '@request.auth.id != "" && user = @request.auth.id',

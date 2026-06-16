@@ -47,7 +47,7 @@ export function mapNoteRecord(record: RecordModel): Note {
     title: record.title as string,
     body: record.body as string,
     hike: record.hike as string | undefined,
-    starred: Boolean(record.starred),
+    starred: record.starred === true,
     created: record.created,
     updated: record.updated,
   };

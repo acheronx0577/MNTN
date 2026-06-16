@@ -1,5 +1,6 @@
 "use server";
 
+import { ClientResponseError } from "pocketbase";
 import { getServerPB } from "@/lib/pocketbase/server";
 import { recordOwnedByUser } from "@/lib/pocketbase/relation-id";
 import { countUserNotes, isAtNoteLimit, MAX_USER_NOTES } from "@/lib/notes-server";
@@ -146,6 +147,26 @@ export async function toggleNoteStarAction(
     return { ok: true, starred };
   } catch (err) {
     console.error("Toggle note star failed:", err);
-    return { ok: false, error: "Could not update favorite." };
+
+    if (err instanceof ClientResponseError) {
+      if (err.status === 401 || err.status === 403) {
+        return { ok: false, error: "Your session expired. Sign in again." };
+      }
+
+      const message = err.message?.toLowerCase() ?? "";
+      if (
+        err.status === 400 ||
+        message.includes("unknown field") ||
+        message.includes("starred")
+      ) {
+        return {
+          ok: false,
+          error:
+            "Starring is not set up in PocketBase. Add a starred (bool) field to the notes collection, then restart PocketBase.",
+        };
+      }
+    }
+
+    return { ok: false, error: "Could not save to favorites." };
   }
 }
