@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import NoteForm from "@/components/account/NoteForm";
 import { deleteNoteAction, updateNoteAction } from "@/app/actions/notes";
-import { getHikes } from "@/lib/hikes";
+import { getLinkableHikes } from "@/lib/hikes";
 import { getServerPB } from "@/lib/pocketbase/server";
 import { requireAuth } from "@/lib/auth";
 
@@ -27,7 +27,7 @@ export default async function EditNotePage({ params }: Props) {
     notFound();
   }
 
-  const hikes = await getHikes();
+  const hikes = await getLinkableHikes();
   const boundUpdate = updateNoteAction.bind(null, id);
 
   return (

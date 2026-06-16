@@ -1,12 +1,12 @@
 import NoteForm from "@/components/account/NoteForm";
-import { getHikes } from "@/lib/hikes";
+import { getLinkableHikes } from "@/lib/hikes";
 
 export const metadata = {
   title: "New note | MNTN",
 };
 
 export default async function NewNotePage() {
-  const hikes = await getHikes();
+  const hikes = await getLinkableHikes();
 
   return (
     <>

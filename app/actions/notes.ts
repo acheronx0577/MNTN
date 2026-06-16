@@ -2,9 +2,34 @@
 
 import { getServerPB } from "@/lib/pocketbase/server";
 import { requireAuth } from "@/lib/auth";
+import { isPocketBaseRecordId } from "@/lib/security/pocketbase-id";
 import type { ActionResult } from "@/lib/types";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+
+function notePayload(
+  userId: string,
+  title: string,
+  body: string,
+  hike: string
+) {
+  const payload: {
+    user: string;
+    title: string;
+    body: string;
+    hike?: string;
+  } = {
+    user: userId,
+    title,
+    body,
+  };
+
+  if (hike && isPocketBaseRecordId(hike)) {
+    payload.hike = hike;
+  }
+
+  return payload;
+}
 
 export async function createNoteAction(
   _prev: ActionResult,
@@ -18,19 +43,21 @@ export async function createNoteAction(
   if (!title) return { ok: false, error: "Title is required" };
   if (!body) return { ok: false, error: "Note body is required" };
 
+  let recordId: string;
+
   try {
     const pb = await getServerPB();
-    const record = await pb.collection("notes").create({
-      user: user.id,
-      title,
-      body,
-      ...(hike ? { hike } : {}),
-    });
+    const record = await pb.collection("notes").create(
+      notePayload(user.id, title, body, hike)
+    );
+    recordId = record.id;
     revalidatePath("/account/notes");
-    redirect(`/account/notes/${record.id}`);
-  } catch {
+  } catch (err) {
+    console.error("Create note failed:", err);
     return { ok: false, error: "Could not create note." };
   }
+
+  redirect(`/account/notes/${recordId}`);
 }
 
 export async function updateNoteAction(
@@ -54,12 +81,13 @@ export async function updateNoteAction(
     await pb.collection("notes").update(noteId, {
       title,
       body,
-      hike: hike || null,
+      hike: hike && isPocketBaseRecordId(hike) ? hike : null,
     });
     revalidatePath("/account/notes");
     revalidatePath(`/account/notes/${noteId}`);
     return { ok: true };
-  } catch {
+  } catch (err) {
+    console.error("Update note failed:", err);
     return { ok: false, error: "Could not update note." };
   }
 }
@@ -73,8 +101,10 @@ export async function deleteNoteAction(noteId: string): Promise<void> {
     if (note.user !== user.id) return;
     await pb.collection("notes").delete(noteId);
     revalidatePath("/account/notes");
-    redirect("/account/notes");
-  } catch {
-    // ignore
+  } catch (err) {
+    console.error("Delete note failed:", err);
+    return;
   }
+
+  redirect("/account/notes");
 }

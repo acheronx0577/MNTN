@@ -56,6 +56,28 @@ export async function getHikes(): Promise<Hike[]> {
   }
 }
 
+export async function getLinkableHikes(): Promise<Hike[]> {
+  try {
+    const pb = createServerPB();
+    const records = await pb.collection("hikes").getFullList({ sort: "order" });
+    if (records.length === 0) {
+      return [];
+    }
+    return records.map((r) => ({
+      id: r.id,
+      slug: r.slug as string,
+      title: r.title as string,
+      subtitle: r.subtitle as string,
+      description: r.description as string,
+      image: r.image as string,
+      difficulty: r.difficulty as string | undefined,
+      order: r.order as number,
+    }));
+  } catch {
+    return [];
+  }
+}
+
 export async function getHikeBySlug(slug: string): Promise<Hike | null> {
   const hikes = await getHikes();
   return hikes.find((h) => h.slug === slug) ?? null;
