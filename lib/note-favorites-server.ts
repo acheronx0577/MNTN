@@ -10,15 +10,6 @@ async function fetchNoteFavorites(pb: PocketBase) {
   });
 }
 
-function findFavoriteForNote(
-  favorites: Array<{ id: string; note: unknown }>,
-  noteId: string
-) {
-  return favorites.find(
-    (favorite) => relationRecordId(favorite.note) === noteId
-  );
-}
-
 export async function getStarredNoteIds(): Promise<Set<string>> {
   try {
     const pb = await getServerPB();

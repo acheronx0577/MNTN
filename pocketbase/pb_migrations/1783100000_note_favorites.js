@@ -1,11 +1,20 @@
 /// <reference path="../pb_data/types.d.ts" />
 
+function collectionExists(app, name) {
+  try {
+    app.findCollectionByNameOrId(name);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 migrate(
   (app) => {
+    if (collectionExists(app, "note_favorites")) return;
+
     const users = app.findCollectionByNameOrId("users");
     const notes = app.findCollectionByNameOrId("notes");
-
-    if (app.findCollectionByNameOrId("note_favorites")) return;
 
     const noteFavorites = new Collection({
       name: "note_favorites",
@@ -39,7 +48,7 @@ migrate(
     app.save(noteFavorites);
   },
   (app) => {
-    const collection = app.findCollectionByNameOrId("note_favorites");
-    if (collection) app.delete(collection);
+    if (!collectionExists(app, "note_favorites")) return;
+    app.delete(app.findCollectionByNameOrId("note_favorites"));
   }
 );
