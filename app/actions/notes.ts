@@ -4,7 +4,7 @@ import { getServerPB } from "@/lib/pocketbase/server";
 import { recordOwnedByUser } from "@/lib/pocketbase/relation-id";
 import { countUserNotes, isAtNoteLimit, MAX_USER_NOTES } from "@/lib/notes-server";
 import { requireAuth } from "@/lib/auth";
-import { isPocketBaseRecordId } from "@/lib/security/pocketbase-id";
+import { isPocketBaseRecordId, isSafeRecordId } from "@/lib/security/pocketbase-id";
 import type { ActionResult } from "@/lib/types";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -111,10 +111,41 @@ export async function deleteNoteAction(noteId: string): Promise<void> {
     if (!recordOwnedByUser(note.user, user.id)) return;
     await pb.collection("notes").delete(noteId);
     revalidatePath("/account/notes", "page");
+    revalidatePath("/account/favorites", "page");
   } catch (err) {
     console.error("Delete note failed:", err);
     return;
   }
 
   redirect("/account/notes");
+}
+
+export async function toggleNoteStarAction(
+  noteId: string
+): Promise<ActionResult & { starred?: boolean }> {
+  const user = await requireAuth();
+
+  if (!isSafeRecordId(noteId)) {
+    return { ok: false, error: "Invalid note." };
+  }
+
+  const pb = await getServerPB();
+
+  try {
+    const note = await pb.collection("notes").getOne(noteId);
+    if (!recordOwnedByUser(note.user, user.id)) {
+      return { ok: false, error: "Not authorized." };
+    }
+
+    const starred = !Boolean(note.starred);
+    await pb.collection("notes").update(noteId, { starred });
+    revalidatePath("/account/notes", "page");
+    revalidatePath("/account/favorites", "page");
+    revalidatePath(`/account/notes/${noteId}`, "page");
+
+    return { ok: true, starred };
+  } catch (err) {
+    console.error("Toggle note star failed:", err);
+    return { ok: false, error: "Could not update favorite." };
+  }
 }

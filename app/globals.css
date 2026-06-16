@@ -2038,7 +2038,7 @@ a.btn-primary {
 
 .note-item {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   gap: var(--space-sm);
   padding: var(--space-sm);
@@ -2046,13 +2046,116 @@ a.btn-primary {
   border-radius: var(--radius-sm);
 }
 
-.note-item a {
+.note-item__title {
+  flex: 1;
+  min-width: 0;
   color: var(--color-text-primary);
   font-weight: 500;
 }
 
-.note-item a:hover {
+.note-item__title:hover {
   color: var(--color-accent-gold);
+}
+
+.note-item__actions {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.note-star-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 8px;
+  color: rgba(255, 255, 255, 0.55);
+  background: transparent;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.note-star-btn .bx {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.note-star-btn:hover:not(:disabled),
+.note-star-btn:focus-visible {
+  color: var(--color-accent-gold);
+  border-color: rgba(251, 215, 132, 0.45);
+  background: rgba(251, 215, 132, 0.08);
+}
+
+.note-star-btn.is-starred {
+  color: var(--color-bg-deep);
+  background: var(--color-accent-gold);
+  border-color: var(--color-accent-gold);
+}
+
+.note-star-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.favorites-section {
+  margin-bottom: var(--space-lg);
+}
+
+.favorites-section__title {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-accent-gold);
+  margin: 0 0 var(--space-sm);
+}
+
+.starred-notes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.starred-note-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  background: rgba(11, 29, 38, 0.45);
+}
+
+.starred-note-card__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.starred-note-card__title {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--color-text-primary);
+}
+
+.starred-note-card__title:hover {
+  color: var(--color-accent-gold);
+}
+
+.starred-note-card__body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.62);
 }
 
 .empty-state {

@@ -1,10 +1,11 @@
-import PocketBase, { ClientResponseError } from "pocketbase";
+import PocketBase, { ClientResponseError, type RecordModel } from "pocketbase";
 import { getServerPB, setAuthCookie } from "@/lib/pocketbase/server";
 import type { Note } from "@/lib/types";
 
 export const MAX_USER_NOTES = 10;
 
-function notesLoadError(err: unknown): string {  if (err instanceof ClientResponseError) {
+function notesLoadError(err: unknown): string {
+  if (err instanceof ClientResponseError) {
     if (err.status === 401 || err.status === 403) {
       return "Your session expired or cannot access notes. Sign out and sign in again.";
     }
@@ -40,7 +41,32 @@ export function isAtNoteLimit(count: number): boolean {
   return count >= MAX_USER_NOTES;
 }
 
-export async function listUserNotes(_userId: string): Promise<{  notes: Note[];
+export function mapNoteRecord(record: RecordModel): Note {
+  return {
+    id: record.id,
+    title: record.title as string,
+    body: record.body as string,
+    hike: record.hike as string | undefined,
+    starred: Boolean(record.starred),
+    created: record.created,
+    updated: record.updated,
+  };
+}
+
+export async function listStarredNotes(): Promise<{
+  notes: Note[];
+  error?: string;
+}> {
+  const { notes, error } = await listUserNotes("");
+  if (error) return { notes: [], error };
+
+  return {
+    notes: notes.filter((note) => note.starred),
+  };
+}
+
+export async function listUserNotes(_userId: string): Promise<{
+  notes: Note[];
   error?: string;
 }> {
   try {
@@ -65,14 +91,7 @@ export async function listUserNotes(_userId: string): Promise<{  notes: Note[];
     }
 
     return {
-      notes: records.map((r) => ({
-        id: r.id,
-        title: r.title as string,
-        body: r.body as string,
-        hike: r.hike as string | undefined,
-        created: r.created,
-        updated: r.updated,
-      })),
+      notes: records.map(mapNoteRecord),
     };
   } catch (err) {
     console.error("listUserNotes failed:", err);
